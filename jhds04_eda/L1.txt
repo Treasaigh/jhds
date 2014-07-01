@@ -1,0 +1,59 @@
+Intro: familiar with tools, familiar with R programming basics, getting data
+Principles of Analytic Graphics
+	p1: show comparisons
+		- evidence for a hypothesis is always relative, aski compared to what
+	p2: show causality, make an explanation, show systematic structure
+		- what is your causal framework for how the data and the underlying situation works
+	p3: show multivariate data (as much data on one plot as possible)
+		- real world is multi-variate, tell a richer story
+	p4: integrate evidence, use different modes of evidence
+		- integrate words, numbers, charts to reinforce
+	p5: describe and document evidence (labels, sources, scales, process/code)
+		- tell a story that is credible
+	p6: content is king (stand or fall dependig on quality of the content)
+Exploratory Graphs: make for yourself to see what is going on in the data
+	Characteristics: quick, many made, personal understanding, details cleaned up later, use color/size primarily
+	Ex: Air Pollution in the US, EPA standards, annual mean over 3 years at set level, make data available
+		Data: read.csv, 2008-2010 average
+	simple summaries
+		one dimension: summary(), boxplot(), hist() with rug(), overlay features (reference to standard, target, ext), abline(), barplot()
+		two dimension: boxplot(xxx ~ yyy), par() hist(), plot(), with(), scatter with color plot(col=xxx), multiple scatter
+	summary: quick and dirty, highlight braod features, explore basic questions/hypotheses, suggest next step
+Plotting Systems
+	3 main systems
+		base: oldest, artist palette, start with blank and add to it
+			convenient, can't move back and forth, hard to translate, plan in advance, series of R commands
+		lattice: created with single function, useful for conditioning, details set automatically, good for many plots on 1 screen
+			annotation is not intuitive, difficult to wield sometimes, can't add once done
+		ggplot2: split between base and lattice, creates a grammar
+			deals with spacing, text, superficial similar to lattice, intuitive to use, can control details easily
+	summary: 3 types, have different uses based on what you need, cannot interchange functions, choose one and stick to it
+Base Plotting System
+	packages: graphics, grDevices, lattice, grid (call mostly indirect)
+	process: where made (screen, file), how use, amount of data going in, able to resize dynamically
+		system to use: among the 3 or new one, can't mix, [breakdown of how each works]
+	phases: init then annotate, have sep functions to do each
+		device: brings up a new screen and draw a new plot in the window
+		arguments: has many, use doc, documented in ?par
+	key parameters: pch, lty, lwd, col, xlab, ylab
+		base graph key params: par() function -- las, bg, mar, oma, mfrow, mfcol
+		see default: call the par() with the 'param' with no value
+	base functions: plot, lines, points, text, title, mtext, axis
+		type='n': set up the other params but do not plot the graphic yet until more is added
+	summary: called with many functions to build up, 2 stages to create and annotate, very flexible
+Base Plots Demo
+	example(points): show some demo in R of some sample functions and plot options
+Graphics Devices
+	device: place where a plot can appear (screen, pdf, png/jpg, svg vector graphics), screen is most common
+		?Devices: help on list of devices
+		screen: used for short, only 1 screen
+		file: use for other documents
+	plot created: (1) call function and then annotate, (2) launch device, call function, close device like a file with dev.off()
+	file devices
+		vector: pdf, svg, win.metafile, postscript
+		bitmap: png, jpeg, tiff, bmp
+		multiple: can open multiple, plots can only happen on 1 at a time, dev.cur() for currently active
+		copying: some plots take a lot of code and are hard to remake, dev.copy()
+
+	
+

@@ -1,0 +1,58 @@
+Hierarchical Clustering
+	hierarchy
+		agglomerative appraoch: group things together into larger and larger groups
+		requires: distance, merging approach
+		produce: tree showing how things are related
+	distance: how do we define close, garbage in/out, euclidean, correlation, binary
+		euclidean: like physical distance, pythagorean, scales well to high dimensions
+		manhattan: city block/checkerboard distance, can't go straight but have to travel in 2D 4 directions
+	example: random generated
+		dist(): function for dist matrix from dataframe points
+		tree: gives you the levels of clustering through the whole data, have to cut at a level to get clusters
+	dendrogram: tree structure diagram of the clustering
+		prettier: there are software packages that make prettier dendrograms for visualization
+	linkage: distance between clusters to decide when to stop and how to group (complete vs average)
+	heatmap(): run a hclust on rows and cols to visualze groups/blocks of data
+	notes: shows relationships, work with different params and settings, dterministic, tree cut level isn't obvious
+kmeans clustering
+	principle: how to define close, distance, what things are close together
+	kmeans: partition into n clusters, define n before clustering, define centroid of the group and adjust centroids iteratively
+		requires: distnace, number of clusters, initial guess of clusters
+	kmeans(): function used, returns vector of which cluster each point is in
+		heatmap: make an image plot of the cluster data, rearrange to put like data points together
+	note: not deterministic, param selection is important and pre-req
+Dimension Reduction
+	Cluster: can cluster the data points, but may not be any interesting pattern under data
+		patterns in rows & columns: order by clustering order and plot
+		related problems: with many variables, create unrelated variables and measure variance
+		goal: first statistical, second data compression
+	solutions
+		svd: have a matrix, decompose to 3 matrices (left, right, diagonal)
+		pca: priciple components analysis, normalize to z values, equal to right from SVD
+	SVD:
+		u, left: breakdown of rows, how their values cluster
+		v, right: breakdown of cols, cluster values
+		variance explained: diagonal only, percent of total variation explained by that components (most to least order)
+		relationship to PCA: fall in line with one another, different versions of the same thing
+		second pattern added to dataset
+			v: partially picks up on the second pattern added, but patterns still mixed
+			d: variance explained helpful but slightly harder to see
+		missing values: 
+			imputing: fill missing data based on some approach (avg, cluster, nearnest neighbors)
+	Face example: low res pic of a face, use reduction to find where variance is explained the most
+	Notes: scale matters, may mix real patterns, computationally intensive, [links to resources on how to use effectively]
+		alternatives: factor analysis, independent component analysis, latent semantic analysis
+Color in Plots
+	Overview: defults are pretty bad, recent development in good graphics and colors
+	Color Utilities: grDevices, use palattes and interpolations, colors() to list names to plug into other plotting functions
+		colorRamp: use 0/1 gradiant to give you ramps of colors in your palette
+		colorRampPalette: returns vector of colors, pass vector of colors with intesity of gradient
+			- pass names of gradient levels, returns char vector of hex color codes for color gradient
+	RColorBrewer: package with some already made palattes (sequential, diverging, qualitative), withs with colorRamp()
+		examples: [examples of palattes in the 3 categories, with their different themes]
+		usage: pass number of colors wanted, and what palatte you want from, pass char vector into colorRamp
+		smoothScatter: scatter plor of many points, makes 2D histogram anc can be tuned with color palattes
+	Other: rgb() function, produce any color via proportions, use alpha for transparency, colorspace for other control
+	summary: good use makes it easy on the reader, packages to help make effective, transparency to clarify density
+
+

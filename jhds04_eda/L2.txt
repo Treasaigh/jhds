@@ -1,0 +1,40 @@
+Lattice
+	use: high dimension, amny plots at once easily
+	lattice: package, with grid for low level plumbing, one-phase where everything is all in a single function
+	functions: xyplot, bwplot, histogram, stripplot, dotplot, splom, levelplot, contourplot
+		formula notation: ~ for function expression
+		conditioning: interactions between, uses |
+		data: DF where variables are found
+	behavior: don't plot directly, return trellis class, data then goes to graphics device to auto-print to send to grpahics
+	Panel Functions: controls what happens in each panel, receive x/y coordinates of their panel
+	Example: MAACS study, how does indoor allergen vary over time
+	Summary: single function, margins and spacing are auto-handled, ideal for condition plots on many vars, panel to customize each panel at once
+ggplot2
+	what: package, grammar of graphics, description of breakng down graphics into concepts like language (words, nouns, verbs, adjectives)
+		modes: first (base), second (lattice), third (ggplot2)
+		grammar: mapping from aestetic to geometric objects, make it easy to get there
+	basics
+		plot(): DF data, made up of aesthetics (size, shape, color) and geoms (points, lines)
+		factors: indicate subsets of data, should be labeled
+			qplot(): hides what goes on underneath
+			ggplot(): core function and very flexible to do many intense things
+		Example: mpg internal package
+			facets: make multiple panels by some factor var (rows ~ cols)
+		Example: MAACS Cohort
+			density smooth: smooth hitogram into line smoothed
+	ggplot()
+		grammar: abstract representation for graphics, language for graphics
+		components: dataframe, aesthetic mapping, geoms, facets, stats, scales, coordinate system
+		building: artist palatte model, start with something and build pieces, layers (plot data, overlay summary, meta/annotate)
+			summary(): call on plot, can see some structure elements
+			facet_something(): vars as (var1 ~ var2) or (. ~ var2) to deault none as .
+			labels: facet will use the data/meta to lable the facets, make graphic much easier
+			annotate: xlab(), ylab(), labs(), ggtitle(), geom function options, theme()
+			alpha: control transparency inside geom
+			color: can be assigned a constant or a factor variable (have to wrap in aes())
+			labs(): modify labels with params
+		axis limits: use xlim and ylim params (pulls data point from source), or coord_cartesian() to change the frame of the graphic
+		Example: more complex
+			cut(): bin data into ranges to make factor vars out of continuous
+
+

@@ -1,0 +1,8 @@
+https://github.com/pozelei/Coursera_ExploratoryDataAnalysis_1
+https://github.com/MartinPons/ExData_Plotting1
+https://github.com/yeckley/explore_assignment1
+https://github.com/mishakob/ExData_Plotting1
+https://github.com/skiadas/ExData_Plotting1
+https://github.com/ilkarslan/ExData_Plotting1
+https://github.com/jhwhite/ExData_Plotting1
+https://github.com/akshayoak/ExData_Plotting1.git

@@ -1,0 +1,178 @@
+Motivation and Pre-Reqs
+	About
+		basic ideas about getting data ready for analysis: find raw data and extract, tidy data principles, practical implementation of R packages
+		depends: toolbox class, R Programming background
+		Useful: EDA, reporting data dn reproducible
+	Wish Data Looked Like: clear, rows/col, same data types, very clean
+		Real: many idfferent formats, errors, raw data in its native format
+		Structure: very neat but not ready for analysis on its own (XML, JSON)
+		Unstructured: free text and the like, want to extract data from the context
+		Database: may need to get into a database to get at data for analysis
+	Where is Data: API, web site archives
+	Goal of Course: raw data -> processing -> tidy data -> analysis -> communication  (people want to skip to analysis, we will start at the beginning)
+Raw and Processed Data
+	Data: qualitative of quantitiative variables belonging to a set of items [toolbox]
+	Raw: original source of data
+		hard: may be difficult to use for analysis
+		processing: analysis includes processing, part fo the DS pipeline (big part of the job)
+		record: important to maintain a record of how the data was cleaned to see if there may be an impacy to downstream analysis
+	Processed: ready for analysis
+		methods: merging, subsetting, transforming, etc.
+		standards: different fields have field standards for how to pre-process (precisions, integrity, reproducibility, consistency)
+Components of Tidy Data
+	Four things you should have at the end
+		raw data: original source
+		tidy data set: what you will use for further analysis
+		code book: describing each variable and its values in the tidy data set, meta-data
+		recipe: explicit and exact way to go from raw to tidy with code book
+	raw: most raw format you had access to
+		examples: binary file, unformatted excel, complex JSON from API, hand-entered numbers
+		format: you know the raw data is right if
+			- ran no software
+			- did no manipulations
+			- did not remove any data from the set
+			- did no summarizations
+			[github.com/jtlook/datasharing]
+	tidy
+		properties: each variable in 1 col, each obs in a different row, 1 table for each kind of variable, multiple tables have linkable keys
+		tips: include a row at the top with var names, var names are human readable, data should usually be one file per table
+	code book
+		properties: info about the variables (with units), info on summary choices made, info on experimental study design used
+		tips: common format like Word/text file, study design section with a thorough description of how data was collected, code book section with each variable and its units
+	instruction list: computer script (R normally, but others OK), input is raw data, output is processed data, no parameters (all aspects fixed)
+		if can't: provide instructions that are completely reproducible, include all steps and versions of software with parameters
+Downloading Files
+	get/set working directory: knowing where the directory of R, be aware of relative vs absolute paths (windows: \, Mac: /)
+	create directory
+		file.exists('dir_name'): will check to see if that directory exists
+		dir.create('dir_name'): will create a dir if it does not exist
+			if (!file.exists('data')) { dir.create('data')}
+	get data from internet
+		download.file(): download from internet, can do by hand but this helps reproducibility
+			params: url, destfile, method
+			Copy Link Address: get the address of the data file link itself to pass into function
+		sample
+			file_url <- 'www.data.com/download'
+			download.file(url=file_url, destfile='./data/cameras.csv', method='curl')
+			list.files('./data')
+			date_downloaded <- date()  # record when the download occurred
+		notes
+			method='curl': need to set mac for https
+			size: if the file is big, it may take awhile
+			date: be sure to record when it was downloaded
+Reading Local Flat Files
+	read.table(): main function to read data into R
+		flexible: robust but requires more parameters than common
+		ram: reads data into memory, so possible to be a constraint, or may need to do in chunks
+		parms: file, header, set, row.names, nrows
+		sample
+			camera_data <- read.table('./data/cameras.csv')  # error, line 1 is header and has different elements
+			camera_data <- read.table('./data/cameras.csv', sep=',', header=TRUE)
+		read.csv: sets the sep to comma and header to TRUE as default
+		params
+			quote: tell R whether there are quoted values, quote='' means no quotes (commonly helps many issues)
+			na.strings: set the character that represents a missing value
+			nrows, how many rows to read of the file
+			skip: number of lines to skip before starting to read
+Reading Excel Files
+	read.xlsx(), read.xlsx2()
+		library(xlsx)
+		camera_data <- read.xlsx('./data/cameras.xlsx', sheetIndex=1, header=TRUE)
+	read specific rows and cols: can pass index to read subset of the cells
+		col_index <- 2:3
+		row_index <- 1:4
+		camera_data <- read.xlsx('./data/cameras.xlsx', sheetIndex=1, colIndex=col_index, rowIndex=row_index)
+	Notes
+		write.xlsx: write out data in excel format using similar arguments
+		read.xlsx2(): commonly runs faster
+		XLConnect: pacakges has more options if you need really powerful stuff to do hardcore excel stuff
+		general: use database or flat files instead of Excel if you can, easier to distribute
+Reading XML
+	XML: extensible markup language, used for structured data, used in net applications
+		components
+			markup: labels that give the structure
+			content: the actual data component itself that is being marked up
+		tags: general labels (<section>, </section>, <line-break />)
+		elements: specific examples of tags (<greeting>Hello World!</greeting>)
+		attributes: components of the labels (<img src="jeff.jpg"/>)
+	Read file into R
+		library(XML)
+		file_url <- 'www.xml.com'
+		doc <- xmlTreeParse(file_url, useInternal=TRUE)
+		root_node <- xmlRoot(doc)  # wrapper element for entire document
+		xmlName(root_node)
+		names(root_node)
+	Directly access parts
+		root_node[[1]]
+		root_node[[1]][[1]]  # keep subsetting to access elements by int index
+	Programatically extract parts of file
+		xmlSApply(root_node, xmlValue)  # loop through all elements of the root node and get the XML value
+	XPath: another language to learn to help access XML in a programmatic way that is very powerule
+		/node: top level node
+		//node: node at any level
+		node[@attr_name]: node with and attribute name
+		node[@attr_name='bob']: node with attr name bob
+	Get the items on the menu and prices
+		xpathSApply(root_node, '//name', xmlValue)  # get the node with the name tag
+	Balimore Ravens Example
+		file_url <- 'http://espn.go.com/nfl.team/_/name/bal/baltimore-ravens'
+		doc <- htmlTreeParse(file_url, useInternal=TRUE)
+		scores <- xpathSApply(doc, '//li[@class='score']', xmlValue)
+		teams <- xpathSApply(doc, '//li[class='team-name']', xmlValue)
+Reading JSON
+	JSON
+		structure: similar to XML
+		data: stored as numbers, strings, boolean, array (comma sep in []), object (comma sep key:value in {})
+	sample
+		library(jsonlite)
+		json_data <- fromJSON('www.address.com')
+		names(jason_data)
+		names(json_data$owner)  # access nested dataframes
+		json_data$owner$login  # continue slicing to go down further
+		my_json <- toJSON(iris, pretty=TRUE)  # write data out to JSON
+		cat(my_json)
+Using data.table
+	data.frame: inherits from DF, written in C to speed up function (particularly for subsetting, group)
+	sample
+		library(data.table)
+		df = data.frame(x=rnorm(9), y=rep(c('a','b','c'), each=3), z=rnorm(9))
+		dt = data.table(x=rnorm(9), y=rep(c('a','b','c'), each=3), z=rnorm(9))  # same way
+		tables()  # see all of the data tables in memory
+		dt[1,]  # subset index
+		dt[dt$t == 'a']
+		dt[c(2,3)]  # single index will take the rows
+		{
+			x=1
+			y=2
+		}
+		k = {print(10); 5}  # subsetting function modified to take expression, set of statements in curl-brackets
+		dt[, list(mean(x), sum(x))]  # pass a list of expressions with col names
+		dt[, table(y)]
+		dt[, w:=z^2]  # add a new column to the table
+		dt2 <- dt  # assignment uses pointers, have to use copy function if you want a true copy in separate memory
+		dt[, m:={tmp <- (x+z); log2(tmp+5)}]  # build a multi-line expression as the new col assignment
+		dt[, a:=x>0]  # produce logical variable
+		dt[, b:=mean(x+w), by=a]  # group operations, g_function style
+	special variables
+		set.speed(123);
+		dt <- data.table(x=sample(letters[1:3], 1E5, TRUE))
+		dt[, .N by=x]  # .N counts the number of times a value exists, runs very fast
+	keys
+		dt <- data.table(x=rep(c('a','b','c'), each=100), y=rnorm(300))
+		setkey(dt,x)  # set the x col as the table key
+		dt['a']  # subsetable by the key as expressed
+	joins
+		dt1 <- data.table(x=c('a','a','b','dt1'), y=1:4)
+		dt2 <- data.table(x=c('a','b','dt2'), z=5:7)
+		setkey(dt1,x); setkey(dt2,x)
+		merge(dt1,dt2)  # merge like keys only, works faster than DF
+	Fast Reading
+		big_df <- data.frame(x=rnorm(1E6), y=rnorm(1E6))
+		file <- tempfile()
+		write.table(big_df, file=file, row.names=FALSE, col.names=TRUE, set='\t', qhote=FALSE)
+		system.time(fread(file))  # much faster way to approach
+		system.time(read.table(file, header=TRUE, set='\t'))
+
+
+
+

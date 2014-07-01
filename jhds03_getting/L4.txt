@@ -1,0 +1,57 @@
+Editing Text Variables
+	fix char vectors: tolower(), toupper(), 
+		tolowwer(names(DF)) to lower names of  cols
+		strsplit(): split names on a char like . or _
+		list: sapply() to split the names to remove unwanted chars or parts from dataframe col names
+		sub(): substitute a char for another one in a vector
+		gsub(): sub() only replaces the first instance, gsub() will replace all instances in target string
+	search
+		grep(): find all location instances where it appears
+		grepl(): look and tabulate boolean how many times it appears
+			subset: use grepl() to subset where something is true
+			value=TRUE: returns the values instead of positions
+			length(): pass over grepl() to see if something appears or not
+	string: nchar() number of chars, substr() substring, paste() concats 2 strings, paste0() no space between. str_trip() trim off excess space beg/end
+	points: all lower, descriptive, not duplicated, no odd chars
+		char: made into factor vars, should be descriptive (TRUE/FALSE or MALE/FEMALE vs 0/1)
+Regular Expressions
+	Literals: words that match exactly in char order
+		simplest: only in literal
+	metacharacters:
+		^: beginning of line
+		$: end of a line
+		[Aa]: matches all chars in [] as equal
+		[a-z]: match anything in the range, works for numerics as well [0-9]
+		[^?.]: caret means anything not in the list
+		.: can be any char (9.11 == 9/11 or 9-11)
+		|: or, can be used to match anything from the list, can be chained to how many you want
+		(): constrain alternatives with a markup, like beginning or end of line, group together
+		()?: optional char
+		\: escape char to prevent instruction from being considered metachar but literal
+		*: any char in any repitition (including none)
+			greedy: finds the longest possible, use *? to find first
+		+: must have at least 1, no nones
+		{}: interval qual, specify min and max number of matches (m,n=min,max, m=0 to m, m,=at least m or more)
+		(): groups can be used to remember matched chars
+Working with Dates
+	Classes
+		date(): get server time from processor
+		Sys.Date(): date only
+	format(): pass $char to feed format into parser
+	as.Date(): turn char vectors into dates
+	as.numeric(): convert to integer days
+	weekdays(), months(), julian()
+	Libridate: ymd(), mdy(), dmy() (don't have to format dates first)
+		ymd_hms(), tz='timezone', use functions instead of format strings
+		wday(): weekday in int and string
+Data Resources
+	Open Governemnt: UN, US, Europe, Countries, data.gov
+	Gapminder: developemnt, health
+	Survey US: asdfree.com
+	Infochims: marketplace, some free some cost
+	Kaggle: DS comeptitions with data available
+	DS: DS have put together
+	Specialized: list of special on certain subjects
+	APIs: twitter, figshare, rOpenSci, facebook, Google maps
+
+

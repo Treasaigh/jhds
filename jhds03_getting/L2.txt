@@ -1,0 +1,46 @@
+Reading from MySQL
+	MySQL: widely used, works well, free, common in internet apps
+	structure: several tables linked with keys, each table can correspond to 1 dataframe in R (basically)
+	installing: dev.mysql.com to install, many different types for OS
+		Mac: install.packages('RMySQL'), Windows is little more involved
+		Web facing: version used for class to keep consistent
+	Connecting and Listing: dbConnect(), dbGetQuery() to send query commands, dbDisconnect() to disconnect from server
+		table: over 10,000; use a few specific one, each table similar to a dataframe
+		dbReadTable(): get the data from the table as a dataframe
+		subset: dbSendQuery() to store the results locally in SQL, fetch() to get the results (useful if the table is very large)
+		dbClearResult(): clear the query from active memory
+		close: remember to close the connection as soon as you don't need it anymore
+	Resources: CRAN vignette, list of commands, no delete/add/etc
+Reading from HDF5
+	HDF5: large, range of types, hierarchical, groups (0+ data sets and metadata), datasets: similar to DF
+	install: see slide for install from biocLite
+	create groups: h5createGroup() to add each group
+	write to groups: write matrix, array to group, h5write()
+		list: h5ls() to see what is in each group
+		dataframe: send the df directly to write to hdf5
+		chunks: use index to write to certain areas in chunks, update records in position
+	resources: tutorial, optimize read/write, hdf5 group
+Reading Data from the Web
+	webscraping: get data from web pages programatically (may be against terms of service)
+	readLines(): url() to open connections, use function to read the data from the connection, then close() connection when done
+	XML package: html is a type of XML, can be used to struture
+	HTTR GET: package to work with websites, extract as text string, can parse to HTML
+		passwords: add authenticate() to GET to get through and pass the password in
+		handles: save the authentication to keep using, keep cookies with to move around site
+Reading from APIs
+	API: connect to sites to get data by request
+	application: create an account, get the OAuth keys
+		oauth_app(): pass the keys and secret
+		sign_oauth1.0(): pass tokens to work with site (twitter example)
+		GET: pass GET into api page to get data back
+	documentation: api will have info you can get with the api doc, likely with examples
+Reading from Other Sources
+	package: there is a package for almost anything if you look, Google 'R package ...'
+	interact directly: work with files, and zip/unzip
+	foreign: load data from other file formats (SAS, SPSS, S, Octave, etc)
+	RPostgresSQL, RODBC, RMongo
+	images: jpeg, readbitmap, png, EBImage (Bioconductor)
+	GIS: rdgal, rgeos, raster
+	Music files, MP3: tuneR, seewave
+	
+

@@ -1,0 +1,53 @@
+Subsetting and Sorting
+	Quick Review: slice dataframe column, [rows,cols], [,'col']
+	Logical: pass logical function to keep TRUE
+	which(): remove NAs at the same time
+	sort(): sort values, include DF col
+	order(): order the whole DF by a col values (ORDER BY)
+	plyr: package with arrange(), other functions to do similar things
+	add rows/cols: use assignment to DF$colname
+		cbind(): add a col on the righthand side of the DF
+		rbind(): add rows in the same way
+Summarizing Data
+	head(): look at the first few rows
+	tail(): bottom few rows
+	summary(): overview based on data type
+	str(): breakdown of the structure
+	quantile(): variability in quant variables, probs=c() to feed percentiles
+	table(): break by values, useNA= to include NA
+	is.na(): use for things like sum, count, all, any
+	colSums()/rowSums(): use with is.na() to see where the missing values are
+	table(DF$col %in% c()) find breakdown by condition
+	cross-tabs: xtabs(x ~ y + y2, data=DF)
+	flat table: ftable(), easier to see larger and multi-dim tables
+	object.size(): see the size on disk, use units='Mb' and the like for consumable units
+Creating New Variables
+	why: raw data not enough, cut up, transform
+	seq(): sequence to be used as index, along=x to make same length as x
+	subset: df$col, can then be passed in as object
+	binary: used as flags to assess conditions, ifelse()
+	cut(): break a variable into n number of groups, bin into categorical style
+	factor(): change var to factor (zipcodes example)
+		levels=c(): param to define level order if not implicit, will auto to low-high or alphabetical
+		mutate: change the dataframe with new cols made from old DF
+	transforms: abs, sqrt, ceiling, floor, round, signif, cos, sin, tan, log2/10, exp, 
+Reshaping Data
+	goal: tidy data (var = col, obs = rows)
+	melt(): id vs measure variables, stack the rest of the data with variable ID field to stack sparse data
+		dcast(): reshape into new DF to tabulate and summarize, can pass diff function to agg by
+	avg values: tapply() with sum along an index
+		split: make list for each key value
+		apply: lapply across list elements a sum
+		combine: unlist() to bring back together
+		ddply: does whole approach in single function
+	g_function: ddply() to add a new col with the SAC process projected out over the like keys
+	other: acast, arrange, mutate
+Merging Data
+	example: peer review data, loading code
+	merge(): (params: x, y, by.x, by.y, all), be default tries to key on common col names
+	intersect(): default to merge on all col names in common
+	join(): plyr package, faster but less featured, 
+		multiple: join_all() brings together multiple frames on basis of common variables ids
+	types of joins: be careful of the type you want to perform
+	
+

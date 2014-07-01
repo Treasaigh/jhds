@@ -1,0 +1,226 @@
+Intro: focus on the programming language aspects of R (less on plots, graphics, ML--covered later)
+Overview & History of R
+	What is R: dialect of the S language
+		S: developed at Bell labs, 1976, internal stats environment
+		Fortran: routines were written as fortran libraries
+		C: rewritten in C in 1988, looked like the version we see today, started adding statistical analysis capability
+		V4: 1998 release, used today, documented by 'Programming with Data'
+	Historical Notes: S
+		StatSci: given license to develop and sell S, renamed company Insightful and purchased in 2004 for $2M
+		Alcatel: purchased Lucent (Bell Labs) in 2006
+		S-PLUS: currently sold version of S, with GUI fancy features added, language mostly unchanged since 1998
+	S Philosophy: interactive environment, don't think of as programming, but additional programming features available as wanted by the analyst
+	Historical Notes: R
+		1991: created in New Zealand, announced to public in 1993
+		2000: R v1.0.0 released
+		2013: R v3.0.2 released Dec2013
+	Features of R:
+		Syntax: similar to S, mostly superficial, different semantics
+		Release: frequent with active community
+		Lean: functionality divided into packages to keep base install lean and fast
+		Graphics: very sophisticated, better than msot stat packages
+		Programming/Interactive: useful for interactive owrk, contains powerful programming language to develop new tools (user -> programmer)
+		Community: active and vibrant, mailing lists (R-help and R-devel) and StackOverflow
+		Free: both in cost and open use (free speech and free beer)
+	Free Software (fsf.org)
+		Run (freedom 0): free to run the program for any purpose
+		Study & Adapt (freedom 1): study how the program works, adapt it to your needs, requires access to the source code as a precondition
+		Redistribute (freedom 2): send new copies to help your neighbor
+		Improve (freedom 3): improve the program, release your improvements to the public, source code is condition
+	Drawbacks of R
+		old: essentially based on 40 year old tech, basic ideas have not changed largely
+		3D: little support for 3D graphics, dynamic (has improved greatly)
+		Demand: functionality based on consumer demand and user contributions, if no one feels like implementing your method, its your job
+		Memory: objects must generally be stored in physical memory, but there have been advancements to deal with this too
+		Ideal: not ideal for all possible situations (drawback for any software), has very high expectations
+	Design of the R System
+		base: base package to run R, comes from CRAN on download
+		else: all other packages that can be downloaded and used to extend the functionality
+			Packages: ~ 4000 pacakges from user community on CRAN (has some restrictions and standards check for quality)
+			Bioconductor: many packages built specifically as a project for genomic and bio data analysis
+			Other: many built by thrid parties, essentially impossible to keep track of
+	R Resources: An intro to R (PDF), Writing R Extensions, Data Import/Export, Admin/Installation Manual, Internals (how R is designed at a low level)
+	Useful Books: set of books to give you a better background as you become an R programmer (r-project.org/doc/bib/R-books.html)
+Getting Help
+	Asking Questions: email different from in person (don't know that the person has the same background, idioms)
+		Busy: others are busy and time is limited
+		Instructor: here to help as much as possible, but there are many students
+	Finding Answers: search forum archives, web, read manual, read FAQ, inspect/experiment, ask skilled friend, read source code
+	Ask: let someone know everything you did so they don't replicate your efforts, or will answer with "read the docs" or the like
+		reproduce: how to reproduce the same result, expected output, what did you see instead
+		environment: version of the product, OS, additional info
+	Subject Headers: get as much useful info in the subject as possible
+	Do: deescribe the goal, not the step, be explicit, provide minimum necessary info, be courteous, follow up with solution when found to help others
+	Don't: claim you found a bug, grovel for someone else to do your homework, post homework on forums, email multiple lists, ask others to debug your broken code
+	Case Study: R-devel with vague subject, little detail to be able to reproduce their result to be able to help them
+		What went wrong: send to wrong list, vague, not reproducible, no evidence of effort to solve themselves
+	Places to Turn: class discussion board, fellow students, r-help mailing list, other mailing lists
+Data Types and Basic Operations
+	Objects
+		Atomic: char, numeric (real), integer, complex, logical/boolean
+		Vector: contains objects of the same class
+			List: represented as a vector but can contain objects of different classes
+			empty: use vector() function to create an empty vector (2 arguments: class of vector, length of vector)
+		Number: generally numeric real, can state you want integer with L suffix
+			Inf: special number infinity (1/0), can be used in normal calc, 1/Inf = 0
+			NaN: undefined value (not a number), can be used as a missing value
+		Attributes: objects can have attributes, not always
+			- names, dimnames, dimensions, class, length, other user-defined
+			attributes(): access attributes with this function
+	Input
+		Expressions
+			<-: assignment operator
+			#: comment designator
+		Evaluation: R engine evals the code typed in when triggered, will make calcs or print something
+			<object>: type and object and hit enter, R will auto-print the value of the object (same as print() function)
+			[ 1 ]: interpreter tells you the element of the vector being printed
+			1:20: generates a sequence from first number to second
+		Creating Vectors: c() function to concat objects to make a vector, vector() function of certain type and length
+		Mixing Objects: R coerce vector to least common denominator to make elements the same type
+		Explicit Coercion: transform from one class to another, as.numeric(obj): make the object numeric (as.logical(), as.character())
+			NA: nonsensical coercion results in NAs (and a warning)
+	Matrices: vector with a dimension attribute
+		m <- matrix(nrow=2, ncol=3)  # create a matrix of 2 rows and 3 columns
+		column-wise: insert element by columns, fill matrix by columns top to bottom
+		m <- 1:10; dim(m) <- c(2,5)  # define dimensions of a matrix with a vector
+		cbinding and rbinding: bind the columns or rows next to each other with the same length
+	Lists: special type of vector, different objects in classes, very import for functions
+		x <- list(1, 'a', TRUE, 1+4i)  # prints each element out in a new line since they are different vectors
+	Factor: type of vector for categorical data (ordered or unordered)
+		lm(), glm(): modeling functions that treat factors in a special way
+		labels: using factors with labels is better than integers, factors are self describing, better than sentinals (like 1 & 2)
+		x <- factor(c('yes','yes','no'))
+		Levels: no yes
+		table(x): freq count of each factor
+		unclass(x): bring down to an integer level, how this is coded on the back end (for efficiency)
+		levels=: factor() argument to set the order and define baseline level
+			x <- factor(c('yes','yes','no'), levels=c('yes','no'))
+	Missing Values: NA or NaN for undefined operations
+		is.na(): test objects to see if they are NA
+		is.nan(): test for NaN
+		NA: have a class, there are integer NA/char NA
+		NaN: is also a NA, but the converse is not true
+	Data Frames: used to store tabular data
+		list: represented as special type of list where each element has to have the same length
+		element: column, and length of each element is number of rows
+		classes: can store different classes of objects in each column
+		row.names: attribute of the DF
+		read.table()/read.csv(): function used to create DF
+		data.matrix(): function to convert to a matrix
+		syntax
+			x <- data.frame(foo=1:4, bar=c(T,T,F,F))
+			nrow(x) == 4
+			ncol(x) == 2
+	Names: R objects can have names, useful for readable code
+		code sample
+			x <- 1:3
+			names(x) == NULL
+			names(x) <- c('foo','bar','norf')
+		use: vectors, lists, matrices (use dimnames() for a name to each dimension, row then col)
+Subsetting
+	Subset: different operators that can be used
+		[]: returns an object of the same class as the original
+		[[]]: extract elements of a list of data frame, only used to extract a single element, and the class may not be the same
+		$: extract elements of a list or dataframe by name, refer to col by name in DF
+	Matrix: use 2 indexes (row, col)
+		x[1,2]; x[1,]  # missing index same as all for that index
+		single element: returned as vector of length 1 rather than a matrix (can be turned off with drop=FALSE)
+		single col/row: returns a vector instead of a matrix (turn off with drop=FALSE to prevent dimension dropping)
+	List 
+		sample
+			x <- list(foo=1:4, bar=0.6)
+			x[1]  # includes name
+			x[[1]]  # just the sequence, not in the list anymore
+			x$bar == x[['bar']]
+			x[c(1,3)]  # return nultiple elements, only way
+		computed: use the [[]] operator on computed indices, $ only works with literal name
+		subset nested elements: [[]] take integer sequence
+			x <- list(a=lit(10,12,14), b=c(3.14,2.81))
+			x[[c(1,3)]] == 14
+			x[[1]][[3]] == 14
+			x[[c(2,1)]] == 3.14
+		Partial Matching
+			x <- list(aardvark=1:5)
+			x$a  # find the one that is implicit, partial match
+			x[['a']] == NULL
+			x[['a', exact=FALSE]]  # turn off exact match in [[]] slicing
+		Removing NA Values
+			sample
+				x <- c(1,2,NA,5)
+				bad <- is.na(x)  # create a logical vector telling you where the NA is located
+				x[!bad]  # slice by logical vector
+			multiple things, want to take subset with no missing values
+				x <- c(1,2,NA,4,NA,5)
+				y <- c('a','b',NA,'d',NA,'f')
+				good <- complete.cases(x,y)  # returns logical value where all elements non NA
+				x[good]
+				y[good]  # take subset to keep only the good elements
+Reading and Writing Data
+	Reading Functions
+		read.table, read.csv: used for tabular data, text files with row/col format and return DF
+		readLines: read file text as a char vector
+		source: read R code files
+		dget: reading R code that has been deparsed
+		load, unserialize: reading binary data into R
+	Writing Functions
+		write.table, writeLines, dump, dput, save, serialize
+	read.table: most important and commonly used functions in R, has a few important arguments
+		arguments
+			file: name of the file or a connections
+			header: logical indicating if the file has a header line
+			sep: string indicating how the cols are separated/delimited
+			colClasses: char vector indicating the class of each column in the dataset
+			nrows: numbers of rows in the dataset
+			comment.char: comment character if it exists
+			skip: number of lines to skip from the beginning
+			stringsAsFactors: should char cariables be coded as factors
+		automatic: for small data, can call function without other arguement and will go to default
+			- skip lines with # starting, determine rows, determine variable type
+			read.csv: identical but with commas a default sep
+	Larger Datasets: things that will make your life easier, prevent R from choking
+		read.table help page: read the doc and have it memorized, hugely important function
+		calc memory: be thorough to calc the memory required, if larger than RAM, stop there
+		comment.char='': if there are no commented lines in your file
+		colClasses: will not have to try to figure it out when there are large datasets, slows things down if large
+			initial <- read.table('datatable.txt', nrows=100)  # read in the first 100 records
+			classes <- sapply(initial, class)  # determine classes from sample
+			tabAll <- read.table('datatable.txt', colClasses=classes)  # project to larger to prevent new analysis for full data
+		nrows: set to help reduce memory usage, will not make it run faster (wc Unix command can help calc number of lines in a file)
+	Know Thy System: memory available, other apps in use, other users loggin in, OS, 32/64 bit (64 can access more memory)
+		Calc Memory rough: 1.5M rows, 120 cols, all cols numeric (1.5M x 120 x 8 bytes == 1.4 GB, + overhead (~ twice)) 2^20 bytes per MB, 2^30 per GB
+	Textual Formats
+		dump, dput: resulting file format is editable, and potentially recoverable in case of corruption (maintains data types)
+			metatdata: preserve the metatdata so another user doesn't have to specify again, keeps metadata with data to reduce loss
+			versions: textual formats work well in version control programs, which only track changes meaninfully in text files (vs binary)
+			life: can be long lived, may be easy to fix if it is corrupted elsewhere
+			Unix Philosohpy: embrace the textual file approach
+			Space: files are not terribly space efficient
+		dput objects: output the code necessary to recreate the object with dput and reading it back with dget
+			y <- data.frame(a=1, b='a')
+			dput(y)  # see the internal structure of the object
+			dput(y, file='y.R')
+			new.y <- dget('y.R')  # reload the object in its original state
+		dump: multiple objects can be deparsed and read back using source
+			x <- 'foo'
+			y <- data.frame(a=1, b='a')
+			dump(c('x','y'), file='data.R')
+			rm(x,y)
+			source('data.R')  # restores objects in environment without new assignment
+		Interfaces to the Outside World: connection interfaces, made mostly to files
+			file: opens a connection to a file
+			gzfile: gzip compressed file
+			bzfile: connection to bzip2 compressed file
+			url: opens a connection to a webpage
+			description: name of the file
+				open: code indicating r:read, w:write, a:append, rb/wb/ab:binary mode
+			power: allow navigation to files or other external objects, but normally not needed as handled by functions
+				con <- file('foo.txt','r')
+				data <- read.csv(con)
+				close(con)
+		Rading Lines
+			readLines: store each line in an element of a char vector
+			url: function to help read the lines of the returned HTML connection stored in a char vector
+Intro to Swirl: experimental feature, (statistics with interactive R learning, allows you to learn R at your own pace, practice as you go)
+
+
+

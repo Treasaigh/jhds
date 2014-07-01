@@ -1,0 +1,32 @@
+str function
+	str: compactly display the internal structure of an object (diagnostic, similar to summary, see what is in an object)
+		goal: one line per object to answer what's in this object?
+		RStudio: basis for the environment panel
+Simulation
+	functions: rnorm, dnorm, pnorm, rpois
+	gen random numbers: d density, r random, p cumulative, q quantile
+		args: specify the mean and sigma or will default to 0,1
+		set.seed: seed the random number psuedo to make repreducible, can be any integer
+	gen poisson variables: use cumulative dist to eval probabilities
+	gen random numbers from linear model, binomial, generalized (poisson)
+	sampling: draw randomly from set of objects, random order of vector, with or without replacement
+R Profiler
+	profiler: when code takes a long time, help figure out why and optimize
+		slow: examine how much time in different parts, code is fast on its own but then looped many times
+		optimizing: function first, readibility, then use profiling to find optimization ideas
+	tools
+		system.time(): eval expression passed, can be many lines, returns time to execute (user/CPU, elapsed total wall clock time)
+			parallel: package to use multiple cores
+			BLAS: multi-thread libraries to use multi-processors
+			beyond: assumes you know where to look, works best on smaller programs
+		Rprof(): starts the profiler, sample at 0.02 secs, summaryRprof() makes output more readable
+			process: keeps track of call stack, tabulate how often each part spends
+			raw: lists of calls, read right to left
+			summaryRprof(): by.total and by.self to tabulate the time at each level, also sample.interval, sampling.time
+	Summary: help performance analysis, breaks code to get good profilers info, C/Fortran not profiled if called
+Scoping Rules (part 3)
+	application optimization: optimization routines require pass of function
+		constructor: make fucntion to be optimized, with data elements specified to not have to call data params each time
+		plot likelihood: fix variable and plot var to be optimized, apply function across params
+	lexical scoping: can build objective functions with everything needed to specify built-in to environment
+

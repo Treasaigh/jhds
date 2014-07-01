@@ -1,0 +1,151 @@
+Intro to CLI (Command Line Interface)
+	CLI: nealry all computers have CLI (Windows: Git Bash, Mac: Terminal)
+		Usage: navigate folders, create files/folderes, edit files/folders/programs, run programs
+		Directory: another name for folder
+			Tree: oragnized in a hierarchy, completely within another
+			navigate: can use CLI to navigate up or down within the tree
+			Root: special directory at the top of the tree, contains all other directories, / common shorthand
+			Home: commonly the ~, where you login to your computer, personal docs and settings under user directory
+	Basics
+		Prompt: see when open up, usually name with $
+		Working: what directory you are in at the moment
+		Path: tracing directory from root to working, path to your current directory
+	Commands
+		Recipe: [command flags arguments]
+			command: CLI command which does a specific task
+			flags: trigger certain behaviours and pass certain types of parameters (can be 0 or more, depending on command)
+			arguments: what the command to trigger is going to modify, or other options from the command
+			example: pwd is a command that requires no flags or arguments
+		pwd: display path of working directory (print working directory), can be used any time
+		clear: clear out the commands in your current CLI window, just have a prompt
+		ls: list files and folders in th current working directory
+			ls -a: list hidden and unhidden files (trash, .DSstore, etc...)
+			ls -al: lists details for hidden and unhidden files and folders
+			-a/-l: flags, start with a dash, can concatanate together
+		cd: change directory, pass directory you want to change to as the argument
+			no argument: return to home directory
+			cd ..: allows you to change directory one level above your current directory
+		mkdir: make directory, create a new folder, takes name of folder to be created as argument
+			mkdir documents: create a new folder called documents, empty directory
+		touch: creates empty file, pass name of file as argument
+		cp: copy, takes file source as first argument, path of copied file as second
+			cp test_file documents: copy the test_file, and put the copy in the documents directory
+			cp -r: copies the contents of a directory into another one, [cp -r dir_source dir_copy]
+		rm: remove, delete a file you no longer want
+			rm -r: remove all files from a directory, but be very careful as once deleted it is gone forever
+		mv: move files between directories [mv new_file new_dir]
+			[mv new_file renamed_file]: rename the file by moving it to a new name
+		echo: print whatever arguments you provide, used to print value of stored variables (useful later)
+		date: print current date
+Intro to Git
+	Version Control: records all changes to a file or set of files, able to recall specific versions later
+		many of us: create something, save it, change it, save again; lose the intermediate versions
+		manage: process of the changes to see the pathway, useful when collaborating with multiple people
+	Git: free open source distributed version control, very commonly used
+		Create: from the same people that developed linux
+		Storage: everything is stored in local repositories on your computer (repos)
+		CLI: operated from the command line
+	Download Git: install on system
+		$ git config --global user.name "frankdevans"
+		$ git config --global user.email "frankdevans@yahoo.com"
+		(Only have to do once, but may want to change down the road, use same commands)
+		$ git config --list (confirm your changes)
+Intro to GitHub
+	GitHub: web-based hosting service for software developement, allow users to contribute to repos
+		Remote Repos: allows push and pull to local repos to and from remote repositories on the web
+		Homepage: place to display your repositories
+		Backup: copy of the code on the server
+		Social: follow other users and share projects, contribute to each other's projects
+	Setup GitHub Account
+		navigating: several tutorians on github
+		profile: shows activity in your repos, and what projects you are working on
+		Edit: can add info about yourself to your profile, optional, want to be able to take credit
+Creating a GitHub Repository
+	Git vs GitHub
+		- don't need github to use git, canbe used on local machine only
+		Git = local, github = remote/web
+		GitHub: allows share repos with others, access other's repos, store remote copies on GitHub's servers
+	Creating
+		Methods: start from scratch or fork someone else's repo
+		Start from Scratch: create from profile page, or github.com/new
+			Create a name, make google-able, decription of the project that is clear
+			Public/Private: Public is default and free
+			Init: README at initialization point, can use markdown to make repo easy to understand
+		Local Copy: open git bash, create directory to store copy of repo
+			$ mkdir ~/test-repo  (make a new directory)
+			$ cd ~/test-repo  (navigate to new directory)
+			$ git init  (initialize a local git repo in this directory)
+			$ git remote add origin https://github.com/your_user_name/test-repo.git  (point local repo to remote created on server)
+		Fork Another Repo: create copy of someone else's
+			Github: click 'fork' to make a copy, called cloning
+			$ git clone https://github.com/your_user_name/repo_name.git
+	Changes: if you make changes, may want to push back to remote copy to keep up with changes
+		Original: may also want to stay current with the changes made to the original at time of fork
+Basic Git Commands
+	pushing and pulling: http://gitready.com/beginner/2009/01/21/pushing-and-pulling.html
+		[workspace] <-> [index] <-> [local repo] <-> [remote repo]
+			workspace: where you are locally working on the files
+			index: what the files are and the associated meta-data
+			local repo: files version controlled on computer
+			remote: will be github in our version
+		Transport Commands
+			add: command to add file from workspace to index
+			commit: move from index to local repo
+			push: move from local to remote repo
+	Adding: working on a local repo under version control, you should do this before committing, updates for the index
+		$ git add .  (add all new files)
+		$ git add -u  (updates tracking for files that changed names or were deleted)
+		$ git add -A  (does both of the previous)
+	Committing: have changes to commit to be saved as intermediate version
+		$ git commit -m "message"  (message: useful desc of what you did, memo; only updates local repo, not remote)
+	Pushing: have local commits you want to update on remote
+		$ git push
+	Branches: may be a version used by different people, don't want your change to break it for everyone else
+		$ git checkout -b branchname  (create a branch)
+		$ git branch  ( see what branch you are on)
+		$ git checkout master  (switch back to master)
+	Pull: if you fork someone's repo or have multiple branches you will both be working separately (GitHub feature only)
+		Function: merge your changes into the other branch/repo
+	Docs: git-scm.com/doc, github.com, google/stack for github
+Basic Markdown
+	Def: text file formatted in a specific way to make is useable for other things in more readable ways
+	File: .md file type
+	Syntax
+		Headings
+			## This is a secondary heading
+			### This is a tertiary heading
+		Unordered Lists: bullet point
+			* first item in list
+			* second item in lists
+	Help: http://daringfireball.net/projects/markdown/, MD button in RStudio
+	RMarkdown: R version that will be used in later parts of the specialization
+Installing R Packages
+	Base: comes with basic functionality, implement the language, but real reason to use is the packages
+	Obtain R Packages: CRAN, Bioconductor Project
+		CRAN available function (~ 5200 total, there are task views that group together many R packages)
+			a <- available.packages()
+			head(rownames(a), 3)  ## Show the names fo the first few packages
+	Install R Package: install simple package with built-in function
+		install.packages('slidefy')  # installs the slidify package from CRAN, and all dependent packages
+		install.packages(c('slidify','ggplot2','devtools'))  # install multiple
+		RStudio: can use GUI to install in a couple different ways
+	Install from Bioconductor
+		source('http://bioconductor.org/biocLite.R')  # get basic installer
+		biocLite()  # basic set of packages install (there are quite a few the first time)
+		biocLite(c('GenomicFeatues','AnnotationDbi'))  # place names of the R packages in a char vector
+	Load R Packages: make the package available once it has been installed, will load dependencies first
+		library(ggplot2)  # command to load the package into R, does not use quotes
+		search()  # shows all functions part of the package just loaded
+Installing Rtools
+	Use: primarily for Windows computers, collection of tools to build R packages
+	Download: http://cran.r.project.org/bin/windows/Rtools/
+		Version: match the version of R with the download link
+		Default: use the defaults where you can (unless you have Cygwin installed, make sure box is checked to have installer edit path)
+	Install DevTools
+		find.packages('devtools')  # see if you have previously installed or not
+		install.packages('devtools')  # install the package if not found previously
+	Verify
+		library(devtols)  # load the library
+		find_rtools()  # should return TRUE to the console if your Rtools installation worked properly
+
+

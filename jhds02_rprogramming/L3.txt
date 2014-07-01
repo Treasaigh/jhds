@@ -1,0 +1,31 @@
+lapply:
+	Loop Functions: lapply, sapply, apply, tapply, mapply
+	lapply
+		arguments: list x, function FUN, ... other args
+		pass args: pass args to target function by name in lapply()
+	anonymous functions: generate on the fly by writing in the lapply() function param
+	sapply: simplify result if possible
+		lapply: always tries to return list
+		simplify: will return more simple object if there is an obvious way to do so
+apply: used to eval a function over margins of the array, rows/cols of matrix, not faster than loop but in one line
+	margin: which dimesion to keep (2=keep cols, 1=keep rows for 2 dim matrix)
+	col/row sums: functions that do this very quicky, optimized for this type of thing
+tapply: apply function over subsets of vector, takes an index to determine grouping factors
+	simplify: arg to add sapply type actions
+split: takes a vector and splits into groups determined by an index of factors
+	lapply: common to split then use lapply, but does the same as tapply
+	dataframe: split df on col, then pass to lapply
+	multiple levels: interaction() function to combine levels or pass list() of factors (will include the empty ones with no elements), use drop=TRUE to drop empty
+mapply: multi-variate, apply in parallel over multiple objects
+Debugging Tools
+	Something's Wrong: message, warning, error, condition
+		warning: code finishes, but produces warning of unusual result
+			invisible(): prevents auto-printing in function
+		error: prevents from moving forward, exits and shows error message
+	What went wrong: input, how called, expecting, messages, what did you get, difference from expectation, correct expectation?, reproduce problem
+	Tools: traceback, debug, browser, trace, recover, (print & cat functions in code)
+		traceback(): tells you where the error occurred in the stack, must be called immediately before any other code
+		debug(): print code of function, then puts in browser to go through line by line (n command oto go to next line)
+		recover: options(error=recover), get menu of function call stack, shows the successive sub calls, can select which environment you want to break down
+	Summary: 3 indications of problem, make sure problem is reproducible, there are many tools, not a substitute for thinking
+

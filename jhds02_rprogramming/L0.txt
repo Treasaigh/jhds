@@ -1,0 +1,16 @@
+Install R and RStudio
+Writing Code: Setting Your Working Directory (Windows)
+	getwd()  # see current working directory
+		read.csv('mydata.csv')  # has to be able to find the file in the working directory
+		Change: you can change your working directory in the GUI
+		Directory: may want to have a single directory for the course and not have to wonder where everything is
+		ls()  # see contents of current workspace
+	Write Code: R comes with a text editor sufficient to write code
+		Save As: save the text file as a file to use in the future
+		dir()  # see a file that was saved, all files in the current working directory
+		source('myfile.R')  # loads all the code from the script in the console
+Writing Code: Setting Your Working Directory (Mac)
+	R Commands: same across platforms
+Installing Outside Software (Mac): update security settings
+
+	

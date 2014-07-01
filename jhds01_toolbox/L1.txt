@@ -1,0 +1,99 @@
+Series Motivation
+	Key Challenge of Data Science: what problem is worth solving where you didn't have to get more info or already had everything you need to answer the question
+		Questions: should come first, then data comes after to provide an answer
+	Instructors: JH Biostatistics, data intensive statistics in biology and medicine
+	Why Data Science: data is very cheap and there is massive amounts of it, tools exist to work with large data
+		Big Data: new frontier, new areas where we have much more than we used to have and there can now be value in answering questions
+		Why Statistical: stats is science in learning from data, reduce uncertainly or quantify it
+		Why are you Lucky: great moment in time, explosive opportunity area to be on the ground floor of for data
+			- many things developed to get involved in high profile projects with high profile results ($3M hospital admittance prize)
+	Why R: becoming most commonly used for data science, broad range of packages (go from raw data to interactive documents and reports)
+		IDE: RStudio one of the best development environments
+		Developers: good community and ecosystem, developing new packages and can be reached to learn about the cutting edge
+		packages: easy to install, made to work well together
+	Who is a Data Scientist: profiles of several people that are data scientists, or who use data in this way to answer interesting questions
+	Goal: teach a set of skill to help you become a data scientist (hacking, math/stats, substantive experience)
+		hacking: where the R programming aspect comes in, capability to answer questions for yourself
+		jobs: very hot job market with a lot of opportunity
+	This course: intro to track, get tools set up, get you basic background
+DS Toolbox
+	What do DS do: define question, define ideal data set, determine if data is accessible, obtain data, clean, EDA, stats/prediction model, interpret results, synth/write up, reproducible, distribute results
+	R: main workhorse of DS for this course
+		Coding: RStudio, one of the best IDEs out there, free, interface with several interactive tools
+		File: R script, text file in .R format
+		R Markdown: docs that can be run multiple times and get the same results, structure in file to knit to HTML to make interactive page
+	Github/Git: share code, contribute to projects
+	CLI: run most commands from the shell CLI
+Getting Help
+	Asking Questions
+		Standard class: 30-100 people, raise hand, ask instructor
+		MOOC: 100K people, use message board, instructor monitor boards when needed (limited), rely on peers when possible, builds a great community
+	Fastest Answer: often the one you find yourself (google, stackoverflow)
+		Post: if you figure out an answer, post to board to help community learn
+	R Functions to help you
+		?<function>: help file in documentation
+		help.search('keyword'): help find in the documentation, softer search, may not have to spell perfectly or looks for keywords
+		args('<function>'): gives you the arguments to a function
+		Code: type function name without brackets and you can see the actual code, or see on cran for source
+	Ask an R Question: how to reproduce problem, expected output, what do you see, versions of packages, OS
+	Data Analysis Question: question, steps attempted, expected to see, saw instead, other solutions may have thought about/tried
+	Question Titles: be specific and clear on the question title so other can find it easily (lead with environment data, then describe issue)
+	Etiquette for Forums: describe goal, explicit, provide min info necessary, polite, follow-up and post solution, use forums instead of email
+		DON'Ts: assume a bug in R or program, have someone else do the work, post answer/questions from quiz, stick to right list, gen data analysis on R forums
+Finding Answers: key DS trait (hacking), figuring out what you need to do
+	Key Characteristics of hackers: find answers on their own, know where to start looking, unintimidated by new tools, okay to say you don't know, polite but relentless
+	Where to Look
+		R: archive of forums, manual/help files, search web, ask a friend, post to forumns, for to R mailing list/StackOverflow
+		Data Analysis: start with forums, search web, post to forums, CrossValidated tool
+		Google DS Questions:
+			Stack Overflow with tag 'R', [data type] data analysis/R package
+			Name of practice: (depends on realm), biostatistics, Data Science, Machine Learning, Signal Processing, Business Analytics, Econometrics, etc...
+Course Overviews
+	R Programming
+		content: data types, subsetting, reading/writing data, control, functions, scoping, vectorized, dates/times, debugging, simulation, optimization
+		readLines: read the HTML of the a webiste given the URL
+		Something's Wrong: when something is not working, how to debug (input, output, corner cases, etc)
+		lapply: apply a function to all elements in a list (loops internally in C code, but called in R)
+	Getting and Cleaning Data
+		content: raw vs tidy, downloading files, reading data (excel, JSON, XML, SQL, HDF5, web), mergind, reshaping, wrangling, summarizing, find/replace, data resources
+		Connecting and listing Databases: connect to a SQL database to get data
+		Merge: different components of data sets, put them together to use as 1
+		Raw vs Processed: how does data come to you, vs once it is ready for analysis
+	Exploratory Data Analysis
+		content: analytic graphics, exploratory graphs, plotting systems in R (base, lattics, ggplot2), Hierarchical clustering, k-Means, dimension reduction
+		add a geom: stack analytics on a single plot
+		Principles of Analytic Graphics
+		K-Means Clustering: cluster data into relavent groups to determine the structure of the data
+	Reproducible Research
+		definition: be able to produce your analysis in a transparent way, when others run they get the same results
+		content: structure of data analysis, organization, markdown, LaTeX, RMarkdown, Evidence based analysis, RPubs and publishing results
+		Steps in Analysis: define question, define ideal data,...
+		Files: data, figures, RCode, Text of analysis
+	Statistical Interence
+		definition: be able to extract generalizable information from data
+		content: basic probability, common distributions, confidence intervals, asymptotics, hypothesis tests, power, bootstrapping, non-parametric tests, bayesian statistics
+		Normal Distribution: how to model, how to use in analysis
+		Bootstrap code: use data itself to create measures of variability to see how generalizable the data can be
+	Regression Models
+		definition: form of creating predictive function, but very interpretable and explanable
+		content: linear, multiple, confounding, residuals/diagnostics, prediction, mis-specification, scatterplot smoothing/splines, ML vs regression, weighted regression, mixed models
+		Regression to the Mean: historically famous ideas
+		Basic Regression: go into more detail but without needing deel calculus knowledge
+		Multivariate: want to know what happens when analysis is adjusted for other variables
+	Practical Machine Learning
+		definition: applications of ML in R, how methods work and when they work well or poorly
+		content: prediction study design, cross-validation, error types, caret package, plotting prediction, preprocessing, regression prediction, tree prediction, boosting, bagging, blending, forecasting
+		Terms: True/False Positives/Negatives
+		Correlated predictors: how to process out undue influence from correlated predictiors
+		Boosting: basic idea and when to use
+	Building Data Products
+		definition: what to do to share the results
+		content: R packages (devtools, roxygen, testthat), rCharts, Slidefy, Shiny
+		R Packages: for the engineers, share the code you write for others to use
+		rCharts: build graphics, interactive
+		Shiny: for end users, build web applications that allow interactive use of analysis
+Installing RStudio: walkthrough of Mac Installation
+Installing Outside Software: walkthrough of updating security settings to allow outside software to be installed
+Installing R: walkthrough of installing R on both mac and windows
+
+

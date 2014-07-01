@@ -1,0 +1,87 @@
+Control Structures: if/else, for, while, repeat, break, next, return
+	if: test logicical conditions (if () {} else if () {} else {})
+		assign: can assign consturct to variable
+	for: loop through successive values in a sequence (for (i in range) {})
+		seq_along: create integer sequence along the length of a varaible, seq_along(x)
+		seq_len: take integer, return int seq for looping
+		vector elements: for (letter in x) {}
+		single: no curly braces needed if one code line
+		nested: can nest for loops per normal
+	while: test condition on each loop (while (cond) {})
+		conditional: while (a && b) {}, eval left to right
+	repeat: init infinite loop, exit with break (repeat {})
+		use: commonly used in optimization, hard to predict how long run
+	next: skip iteration of loop, similar to python 'continue'
+	return: exit function with given value
+Functions
+	function(): directive, stored as object, 
+		syntax: f <- function(args) {}
+		object: first class, can pass as arguments, can nest inside other functions
+		arguments: named, default values, formals (return formal args in R)
+			- match positionally or by name ( sd(mydata) vs sd(x=mydata))
+			mix: call some params with position and other by name
+			named: useful on the CLI, can't remember order
+			partial: type part of arg name, as long as unique similar will match
+	define: specify the args and defaults
+		lazy eval: args eval as needed inside of function execution
+		... agr: variable number of args, used to extend other arguments when only want to change default on certain args (preserve original args)
+			number: cann't be known how many params, paste() to concat n nunber of args
+			post ...: args after ... have to be named
+Your First R Function
+
+	add2 <- function(x,y) {
+		x + y
+	}
+
+	above10 <- function(x) {
+		use <- (x > 10)
+		x[use]  # no return necessary, uses last line unless otherwise specified
+	}
+
+	col_mean <- function(y, remove_NA=TRUE) {
+		nc <- ncol(y)
+		means <- numeric(nc)
+		for (i in 1:nc) {
+			means[i] <- means(y[,i], na.rm = remove_NA)
+		}
+		means
+	}
+
+Coding Standards
+	Text editor: no additional formatting, basic code only in file, readible by any basic program
+	indent: make code readable, use spacing to help control flow readability
+	limit width: roughly 80 cols normal (all can be controlled in RStudio preferences)
+	length: limit function to 1 basic activity, split logical steps into functions
+		page: nice to have funciton small enough to see on 1 page or screen of code
+		traceback: easy to find bugs when you know what function has the problem
+Scoping Rules
+	Binding values to symbol: searches through environments to find right one
+		global: starts with global, user's workspace
+		namespace: search through all packages on the search list (search()), all packages currently loaded into R
+		library(): command to load packages, puts in spot 2 in searchlist
+	Rules: how a value is bound to a variable
+		lexical/static: use search list to bind to symbol
+		free variable: use the scoping rules, searched for in environment of function definition
+			k-v pairs: each environment has k-v pairs of variables to values
+			parent: each environment has a parent and children
+			search process: start in global, then parent, continue down search list until top-level, then empty
+	Nested: can define and return functions from functions
+		ls: return function environment
+	Lexical vs Dynamic:
+		Dynamic: free variable names come from calling environment instead of defined
+		Lexical Langauges: Scheme, Perl, Python, Common Lisp
+		Consequence: all objects stored in memory, function carry pointer to defining environment
+Vectorized Operations
+	vectorized: operations happen in parallel to vectors (rather than looping for element-wise operations)
+	matrix: works on matrices as element-wise operations
+Dates and Times
+	representation: have special classes (Date for date, and Time POSIXct and POSIXlt)
+	as.Date(): convert char string to Date object, unclass() shows integer representation (days since 1970-01-01)
+	Time: POSIXct (stored as integer) and POSIXlt (stores as list with other attributes like day of week, quarter, etc)
+		as.POSIXct()/as.POSIXlt(): functions to transfer, can unclass() to see lt elements, access with $ like dataframe
+		strptime(): convert string times to POSIX time objects (uses format strings, use docs to find)
+	Operations: use > < == >= <=, make sure to translate to same object
+	Leaps: keeps track of different timezones and leap years when necessary, advantage
+
+
+

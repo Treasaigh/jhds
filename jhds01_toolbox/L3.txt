@@ -1,0 +1,93 @@
+Types of DS Questions
+	Questions (in order of difficulty): descriptive, exploratory, inferential, predictiive, causal, mechanistic
+	Descriptive: describe a set of data
+		- first kind of data analysis performed
+		- commonly applied to census data
+		- description and interpretation are different steps
+		- usually cannot be generalized without adding some type of stat modeling
+		Example: US Census, collect data about people in the US to describe the population
+		Example: Google n-gram viewer, show plots about the presence of words or phrases
+	Exploratory: find relationships you didn't know about
+		discovery: models good for discovering new connections, define future studies
+		- usually not the final say, should not be used for generalization or prediction (correlation does not imply causation)
+		Example: looking for brain stimulus with blood flow pattern, discovereing the connection only
+		Example: sloan digital sky survey, pictures of the night sky to discover new astonomical data
+	Inferential: use a relatively small sample of data to say something about a larger population
+		model: inference is a common goal of many statistical models
+		estimates: involves estimating both the quantity you care about and your uncertainty about your estimate
+		dependencies: heavily on both the population and the sampling scheme
+		Example: effect of air pollution control on life expectancy based on subset of county data in US
+	Predictive: use data on some objects to predict values for another objects or a future value instance
+		causation: 'x predicts y' <> 'x causes y', common fallacy
+		accuracy: depends heavily on measuring the right variables, more data and a simple model work really well usually
+		future: prediction is very hard, particularly about the future
+		Example: 538.com nate Silver, uses polling data to predict elections
+		Example: Target finds out teen is pregnant before her dad did
+	Causal: find out what happens to one variable when you make another variable change
+		random: required normally to identify causation, possible without random study but analysis is complex and sensitive to assumptions
+		average effects: causal relationships commonly ID as average effects, but may not apply to all individuals
+		gold standard: causal models are usually the gold standard for data analysis
+		Example: fecal transplants to have bacteria populate their colon to causally associate better outcomes from bacteria induction
+	Mechanistic: understand the exact changes in variables that lead to changes in other variables for individual objects
+		hard: incredibly difficult to infer, particularly when there is any noise in the data
+		deterministic: commonly used where the data is simple and the results deterministic (engineering, physics, etc.)
+		error: generally the random component of the data is the measurement error rather than data noise
+		inference: if the equations are known but the parameters are not, this is commonly used
+		Example: discover differences in pavement design that lead to changes to function of that road pavement
+What is Data
+	Wikipedia: values of qualitative or quantitative variables from a set of items (population)
+		Variables: measurements or characteristics of an item in the set
+		Qualitative: categories, not order or measured, labels
+		Quantitiative: measured on a scale, usually continuous, have a natural order of values
+	Look: many different kinds of data
+		Log/Text: raw textual data logged form something that has the data in a raw form with little structure and space efficient
+		API: interface to a program that returns a structured form of data to query
+		Medical Records: common data used, many data problems need access to medical record data, semi-structured (need to extract data items)
+		Binary: video, audio, picture
+		Open Websites: curated data sets from many different public and private sources
+		Perfect Structure: this is rare, but some data is in a ready-to-analyze format
+	Important: data is second to the question you want to answer
+		limit/enable: sometimes the data you can get to will limit or enable certain questions to be asked
+		save: having data can't save you if you don't have a question
+What about Big Data
+	How much data is there: 2011 1.8 ZB estimate
+	Cloud/Cluster: some data is so big you can't use a single machine
+	Why Now: Milgrim experiment has n=296, chain letter, 64 of the chains came back to the original location (small world problem), 6 degrees of separation
+		IM: instant message netword analysis of 30B conversations from 240M people, found average path of 6.6
+	Right Data: more important than size, reasonable answer may not be able to found no matter how big the data is
+Experimental Design
+	Example (why to care): genomic study about what type of chemotherapy you may best respond to based on genomic data
+		- used bad model and didn't fix into clinical trials, patients ended up suing over the model and mistakes
+	Plan for Data and Code Sharing
+		code: github
+		data: moderate size data can use figshare
+		Leek Group: method on github from prof to share large data
+	Formulate Question in Advance: Obama Campaign Example
+		Question: does changing the text on the website improve donations
+		Experiment: randomly show different versions, measure donation levels, determine which is better
+		Statistical Inference: important aspect of the science part, experiment on a small sample and infer back to population based on results and sampling
+			[Population] -> PROBABILITY -> [sample](Descriptive Statistics) -> INFERENTIAL STATS -> [population]
+			- look to variability in conditions vs variation between conditions to determine effect
+			confounding: looking for correlations between two variables, when a third condition may affect both (shoe size vs literacy, take age into account)
+			Randomization and Blocking: 
+				fix variables to prevent change of small variables
+				stratify: use equal dist of each co-variable in the test to reduce effect
+				randomize: if you can't fix the variable, randomize it
+		Prediction: measure something in the training set, measure both outcomes and build predictor based on what was different
+			Prediction vs Inference: overlapping variability in means of samples mean prediction defers to probability (which may not be terribly reliable
+			Key Quantities
+				positive/negative status: test vs condition of disease
+					True Pos/Neg: test and conditionalign
+					False Pos: test was pos, condition was neg
+					False neg: test was neg, condition was pos
+					sensitivity: P(pos test | pos condition)
+					specificity: P(neg test | neg condition)
+					pos predictive value: P(pos condition | pos test)
+					neg predictive value: P(neg condition | neg test)
+					accuracy: P(correct outcome)
+				Data Dredging: keep refining questions until you find a result you like from a small subset of the data due to coincidence
+	Summary
+		Good Experiments: replicable, measure variability, generalize to the problem, transparent
+		Prediction is not Inference: both can be important, beware data dredging
+
+

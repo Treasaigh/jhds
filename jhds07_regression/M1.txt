@@ -1,0 +1,86 @@
+Intro
+	Motivating Example: Francis Galton, predicting height, regression to the mean
+	Questions: prediction, complex interactions, high dimensions, simple & interpretable model
+		assumptions: generalize to population, other factors
+	Franchis Galton's Data: 1885, cousin of Darwin, (install.packages('UsingR'), marginal distibutions of height
+		Code: histogram of child and parent
+		Marginal Infomation Summary: looking not at the pairings, but at the 2 populations independently
+			least squares: find value that minimizes sum of square distances from each point, center of histogram mass
+			mean: in this case with 1 dimension, the value is the sample arithmetic mean
+	Experiment: manipulate to verify the mean least squares (code in github)
+	math: breakdown of the symbolic algebra math
+	Regression through the origin: start at 0,0 origin, more pivot line to minimize distances between points and line
+Basic Notation
+	Notation for Data: n data points subscript, {1,2,3}, n=3, X x, x bar
+	emprirical mean: average of vector, subtract mean from points to get mean 0 data
+		centering: name of process, measure of central tendency
+	empirical standard deviation & variance: formula for variance, stdev = sqrt(var)
+		scaling: rescale data to have a stdev of 1
+		unbias: divide by n-1 instead of n for unbiased estimate
+	normalization: subtract off mean and divide by stdev to get z value
+	empirical covariance: function on 2 vectors, related to correlation
+		correlation: order does not matter, between -1 and 1, measures strength of linear relationship
+Linear Least Squares
+	fitting the best line: find the best prediction with the least amount of total squared error
+		general math: minimize squared error over the sum of the terms
+		mean only regression: to only consider horizontal lines (previous lecture)
+		origin: the calculated pivot point to optimize on
+	recap: 
+		intercepty only: look at horizontal line, ls estimate is mean
+		slope only: all lines starting from origin
+		intercept & slope: real regression, empiracal correlation times ration of standard deviations
+	consequences: 
+		average origin: line will always travel thorugh the XY average of the data
+		units: slope has units of y/x like any slope
+		center scaled: regression line the same as centering data and regressed through origin
+		normalized: slope is corr(Y,X)
+Regression to the Mean
+	example: simulated pairs of random normals, probability that there are smaller values than the highest initial value
+	plotting: normalize data and set plot paramaters
+		abline(): useful function for drawing line, feed intercept and slope as args, useful for reference lines
+	discussion: multiplication by correlation shrinks toward center, regress to mean
+Statistical Linear Regression
+	basic model w additive Gaussian errors: go from estimation to inference
+		probabilistic model: include error term with IID errors
+		expected: conditioning on x, assume errors lead to expected 0 (same amount + as -)
+		likelihood: formula, bivariate, under gaussian errors MLE are same as LSQ estimates (-2 log likelihood)
+	interpret regression coefficients
+		B0 (beta naught): expected y given x = 0, when predictor is 0 (not always of interest, may be out of bounds)
+			shift: shift x values by alpha to change in intercept but not the slope
+		B1: expected change in response for a 1 unit change in the predictor
+			factor: multiply factor same as divide coefficient by factor a (convert units as an example)
+		prediction: guess outcome, plug into linear equation, minimized by least squares
+	example (diamond): code to plot fitter regression line and data
+		fit model: extract coefficients from model
+			I(): help center the data on the mean values to center on mean
+			units: change with division of coefficient on the same scale
+		predict: predict() pass lm with DF of new data for predictions (same variable name for coefficients)
+Residuals
+	background: observed outcome, predicted outcome, residual difference between observed and predicted/modeled
+		def: vertical distance, before being squared, just the distance itself
+	properties: 
+		expected value: 0, if intercept include, sum of residuals expected at 0
+		use: investigaving poor model fit
+		outcome: with linear association of the predictor removed, differentiate from systematic variation
+	plot: residuals vs x, preserve the spacing
+		pattern: look for any pattern that mean something is missed by the model systematically
+		heteroskedasticity: variable not constant as function of x (not common, but illustrative)
+	example (diamond)
+	summarizing variation: total variation = residual variation + regression variation
+		model: descripe % of total variation described by the model (R squared)
+		relationship between r2 and r: percentage variation explained by regression model
+			fit: misleading for model fit
+			example: anscombe 4 regression sets (demo that r2 is not only measure of fit to consider)
+Inference
+	regression inference: review model and fit, assume no true model is known
+	review: statistics often have properties (normal dist, used to test hypothesis, used to create CI)
+		regression: with IID sampling assumptions and normal errors, inferences will follow similarly to SI class
+		asymptotics: not convered, normal results still hold the same
+	results: sigma commonly replaced by estimate, IID gaussian errors follow t dist, use for CI and hypo test
+		code: code example on diamong data set
+	prediction: need standard error to create prediction interval
+		prediction interval: variation based on standard error, variation increased with distance from the mean
+		data n: as we get more data, interval will go toward 0, prediction will never get to 0 completely (variation around)
+		slope standard error: want variability in X to reduce slope variability
+
+

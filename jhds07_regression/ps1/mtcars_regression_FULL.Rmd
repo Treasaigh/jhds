@@ -1,0 +1,159 @@
+---
+output: html_document
+---
+### Miles per Gallon (MPG) on Manual vs Automatic Transmission Vehicles
+#### Frank D. Evans - Johns Hopkins Data Science, Regression Modeling
+
+
+
+### Executive Summary
+
+
+
+
+### Exploratory Analysis
+
+Load the data set, and required libraries.
+```{r}
+library(datasets)
+library(MASS)
+data(mtcars)
+```
+
+The key questions of interest concern the car mileage (mpg) and type of transmission 
+(0:automatic, 1:manual).  Based on data documentation, it can safely be assumed that 
+transmission type is a discrete factor dimension, while mpg is measured on a bounded,
+yet continuous scale that will consist exclusively of positive values.  To verify
+assumptions and get a starting point of scale of the data, we will call a summary of
+the mpg attribute.
+```{r}
+summary(mtcars$mpg)
+```
+
+To get a sense of scale, we'll examine the number of records by factor for the transmission
+variable.
+```{r}
+table(mtcars$am)
+```
+
+To get a prelimiary sense of data difference, we can run a summary separated by the 
+transmission factor.
+```{r}
+by(mtcars$mpg, mtcars$am, summary)
+```
+
+In addition to quartiles, it is useful to get a feel for the distribution of the mpg
+data with standard deviations at a 95% confidence interval.
+```{r}
+c(avg = mean(mtcars$mpg), 
+  sigma = sd(mtcars$mpg), 
+  sig_hi = mean(mtcars$mpg) + 2 * (sd(mtcars$mpg)),
+  sig_lo = mean(mtcars$mpg) - 2 * (sd(mtcars$mpg)))
+```
+
+Next we can examine the straight correlation of the two factors of interest, which will
+indeed verify that there does exist a relationship between the variables of interest 
+independent of corroborating factors.
+```{r}
+cor(mtcars$mpg, mtcars$am)
+```
+
+### Regression Analysis
+#### Single Variable
+We first want to test a relationship directly between the variables of interest.  A
+single variable regression seems to imply a considerable relationship.
+```{r}
+fit_1var <- lm(mtcars$mpg ~ mtcars$am)
+summary(fit_1var)
+```
+The coefficient of 7.2 would imply that in the abscence of other factors, it should 
+be expected that a manual tranmission car (encoded in the am variable as 1) attributes 
+to an increase of 7.2 mpg.  However, with a t value of 4.1 and a considerable band of
+variation around the residuals--this model appears to be of poor fit.  Further investigation
+of the plot of the residuals (Appendix: Figure 1) confirms the probable poor fit of the
+single variable model.
+
+#### Multi-Variable Analysis
+Next, we consider all of the factors from the dataset.  A pairs plot of the non-derivative 
+factors in the data show there to be likely considerable statistical relationships among 
+several key factors throughout the data (Appendix: Figure 3).
+```{r}
+fit_multi <- lm(mpg ~ . , data = mtcars)
+summary(fit_multi)
+```
+The estimate coefficient of transmission type against mpg falls considerably to 2.5 when all
+factors are considered.  However, the very high p-value of 0.23 indicates that this has a 
+relatively high probability of not being significant.  
+
+To find a better fitting model that best captures the variability given the variables given,
+a generalized linear model is fit against the principle variables. (Note: factor dimensional
+variables are fed into the model with a factor object conversion to automatically generate
+the necessary dummy variables.)  Then, we leverage a stepwise algorithm to consider alternate
+multi-variate regression models for better candidates.
+```{r results='hide'}
+step_fit <- glm(mpg ~ as.factor(am) + as.factor(cyl) + as.factor(gear) + disp + hp + drat + wt, data = mtcars)
+model_fit <- stepAIC(step_fit, direction = 'both')
+```
+```{r}
+model_fit$anova
+```
+The results of an ANOVA test from the stepwise fit algorithm suggest a final model based on
+the transmission type compunded with the number of cylinders in the car's engine (cyl), the
+horsepower of the car (hp) and the weight of the car (wt).  From an intuition perspective, this
+makes probable sense.
+
+A final model is built from these factors.
+```{r}
+final_model <- glm(mpg ~ as.factor(am) + as.factor(cyl) + hp + wt, data = mtcars)
+summary(final_model)
+```
+The results of the sugested model suggest a much lower relationship, with a manual transmission
+attributable to a 1.8 mile per gallon lift when controlled for key corroborating factors.
+However, the variability of this measure is still present as the high p-value of 0.21 for the
+transmission factor means that there is a relatively low probability that the relationship as
+observed in this data is significant.
+
+More significant factors are found among the engine size, the horsepower of the engine, and the
+weight of the car.  The weight of the car being the most sginificant factor statistically, and
+interpreted as a probable 2.5 mile per gallon decrease with every 1,000 pounds of additional
+weight in the car itself.  Behind this factor, is a likely significant factor that the presence
+of a 6 cylendar engine as compared to a 4 cylandar baseline attributes a reduction of mpg by
+3.0 miles per gallon.
+
+A major corroborating factor surrounding statistical signifigance in this case is the high
+ratio of the total number of available variables (11) to the number fo observations (32).
+The resultant model is likely to improve considerably with the addition of more data.  However,
+an examination of the model fit and residual fit (Appendix: Figure 4) show that given the data
+and variables for analysis, incorporating the additional variable results in a significantly
+better explantory and predictive model.
+
+## Appendix
+
+### Figure 1: Single Variable Regression Plot and Residuals
+```{r fig.height=5, fig.width=8}
+par(mfrow = c(1,2))
+plot(mtcars$am, mtcars$mpg, main = '1 Variable Regression: MPG vs Transmission')
+abline(fit_1var)
+plot(mtcars$am, resid(fit_1var), main = 'Residuals: 1 Variable Exploratory')
+abline(h = 0)
+```
+
+### Figure 2: Single Variable Regression - Full Model Fit Plots
+```{r fig.height=8, fig.width=8}
+layout(matrix(c(1,2,3,4),2,2))
+plot(fit_1var, main = 'Single Variable: mpg vs transmission')
+```
+
+### Figure 3: Pairs Plot for MTCars Attributes
+```{r fig.height=5, fig.width=5}
+test_vars <- c('mpg','cyl','disp','hp','wt','gear','carb')
+pairs(x = mtcars[,test_vars], 
+      panel = panel.smooth,
+      main = 'Pairs Plot with Smoothing for MTCars Attributes')
+```
+
+### Figure 4: Final Model Regression - Full Model Fit Plots
+```{r fig.height=8, fig.width=8}
+layout(matrix(c(1,2,3,4),2,2))
+plot(final_model, main = 'Final Model: mpg vs transmission and other factors')
+```

@@ -1,0 +1,98 @@
+Multivariate Regression
+	example: to consider results with multiple factors, it is important to be able to hold some factors constant
+		generalize: linear not great for multiple factors, generalize prediction capability
+	linear: provide multiple coefficients to each factor and minimze error
+		estimates: use linear algebra with intuitive development
+	sum fit with 2 regressor: regression estimate of first is reg through origin
+		isolation: only considering variable in isolation once regress out other factor
+	general case: yield p equations, solving yields least squares estimate
+		adjust: adjust the coefficient for the linear impact of the other variables
+		reduce: p LS equations to 1-p LS equations and p-1 unknows
+		iteration: continue iterations, take residuals over confounders and continue through all variables
+		efficient: not efficient, but easy to code and intuitive without complex linear algebra
+		order: does not matter, same result
+	interpretation: expected change in the response per unit change in the regressor, holding all other regressors fixed
+		properties: model, fitted, residuals, variance estimate
+		predicted responses: plug into linear model
+		coefficients: SE, t dist with n-p degrees of freedom
+	linear models: most important applied statistical and ML technique, by far
+		examples: harmoncs from signal, fit complex functions, factor variables, build prediction models, interpretable
+Multivariate Examples
+	swiss: fertility
+		adjustment: reverses the sign on an effect
+		reverse: once another factor is pulled out, the relationship is reversed 
+		right model: is positive marginal an artifact of not accounted for another factor
+			- making a claim without controlling for factors leaves analysis open to criticism
+			- craft a story, given full data, what will critics say (take away their ammunition)
+			causal: another branch of stats to find real causality, beyond scope
+		unnecessary variables: factors that can't add information (eg. add 2 factors together), linear function
+			R: will throw out as NA when it sees this pattern
+	Dummy Variables:
+		Linear model beta 1: interpreted as increase/decrese and mean compared to those not in the binary group
+		more than 2 levels: works for multiple factors, commonly use in/out designation for each factor group
+			coeff: interp according to expectation, may need a function of beta to compare some groups
+			code: when factor variable is added to formula, will create dummy automatically, lowest is reference
+			hard code dummy variables: use == for equality (to demo the same results)
+		omit intercept: includes all factor variables as dummies, no longer a linear combination as a comparison
+		summary: treat as factor vs omit intercept, refit with new reference to see direct comparison
+			relevel(): way to change reference with code without a new model
+			manual: code to do process manually (for reference purposes)
+			other thoughts: counts bounded from negative, variance not constant in example
+	example: millenium development goal 1 (WHO initiative, malnutrition)
+		error: think of as everything we didn't measure
+		males vs females: create dummy variable for binary condition
+			results: same slope, different intercept
+			results: different slopes, change in intercept between groups and slope
+	interpreting continuous interaction: hold variable constant, expected change in Y per X holding all else constant
+		- beta 1 is the slope when x2 = 0
+		- beta 3 is change between the interaction
+		example: relation to WHO data
+		interactions: good to write down interactions model before getting to output, easy to screw up at all levels
+Adjustment
+	example 1: simulated data to make it easy to know the truth about what we are test modeling
+		discussion: intercept depends on group status, same slope parallel lines
+	example 2: linear relationship on the same line, almost no overlap on X
+		comparable: not comparable with no common X variables (both are unknown about the other)
+		discussion: x related to Y, no intercept depend, group variable marginally related
+			maginal: marginally related without including X
+			model: estimate no effect due to group, not enough overlap
+	example 3: clear effect in regression, treatment effect reverses itself for same X
+	example 4: lots of overlap, little marginal association, strong adjusted relationship
+	example 5: no effect, treatment affect depends on what value of X you are on (pos vs neg)
+	example 6: no relationship for 1 var, but lots for another
+		- plot residual haven taken out effect of another factor
+	final thoughts: difficult if you want to interpret, prediction alone is relatively easy
+		result: del with the impact of assiciations
+		harder: looking for causality, domain of other statistics
+Residuals, Variation
+	linear model: refresh on notation, assume IID errors, residuals
+	influence, high leverage, outlying points
+		outlier: vague term, different ways to determine (spurious, real, degrees of influence)
+		measures: ?influence.measures, breakdown of the different measures built in
+	use: be wary of simplistic rules, understand what they are trying to accomplish
+		diagnose: probes and tools to look at data in different ways
+		patterns: residual patterns are a good indicator of poor fit
+		inference: get to bottom line, how does inclusion/exclusion of this point impact the model
+	examples: random with one influential point, outlying on line, plot residuals
+Multiple Variables
+	modeling: there is another class on prediction and ML, focus on modeling
+		interest: interpretable representations of the data, teaches us something about the data
+		right model: philosophy, have to learn something
+		wrong: many things can lead to wrong models, have to make good model decisions
+	Rumsfeldian Triplet: known knowns, known unknowns, unknown unknowns
+	general rules: omit variables leads to bias, include everything increases error,
+		n: model tends toward perfect fit as n variables (non-redundant) goes up
+		example: plot of r2 vs n as random noise
+	variance inflation: simulate random noise, model each
+		factors: related variables, don't know sigma, orthoganal (no inflation)
+		VIF: increase in variance for the ith regressor compared to ideal setting
+			SD version: take sqrt() of the VIF to state in standard deviations (preferenec)
+	example: swiss data
+	residual variance estimation: bias underfit, unbiased correct or overfit but overfit leads to larger variance
+	covariate model selection: covered more and better in the prediction/ML class, PCA, good design, randomization
+		prof fav: description of method preferred by prof (scientific context, use model to probe and test robustness)
+	nested model selection: fit all models, use update() function with anova() test
+
+
+
+

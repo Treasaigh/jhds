@@ -1,0 +1,25 @@
+Generalized Linear Models
+	Linear Models: most useful applied statistical technique (documentation of limitations)
+	GLM: 3 components, exponential family model, systematic component, link function
+		Example: logistic regression on addititive error linear model
+			logit: log trans of the odds (mean/1-mean)
+			posson regression: breakdown of components and likelihood
+		Note: don't need full data, only canonical link functions
+	Variances: function of the linear predictor
+	Odds and Ends: iterative solvency, predicted responses, 1 unit increase holding coefficients constant
+Binary GLM Examples
+	logistic regression: interpret as odds ratio based on predictor (points scored in Ravens NFL example)
+		function: manipulate to investigate what the params affect in the probability odds function
+		exponentiate: take the exp() of the coefficients to pull back out of log scale and get odds
+	ANOVA: test of model fit for nested models.
+	Interpret Odds Ratios: not probability, relate to gambling to make easy to interpret, relative
+		Retrospective Studies: relative scale for following conditions (long term effects of lung cancer)
+Poisson GLM Examples
+	Distribution: models counts and rates, examples, rate count per monitoring time
+	Examples: plots of poisson with different lambdas
+		Example: web hits per day
+Olio
+	Fit functions using Linear Models with splines
+	Harmonics with Linear Functions
+
+

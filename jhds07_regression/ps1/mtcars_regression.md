@@ -1,0 +1,40 @@
+# Miles per Gallon (MPG) on Manual vs Automatic Transmission Vehicles
+### Frank D. Evans - Johns Hopkins Data Science, Regression Modeling
+
+
+
+## Executive Summary
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

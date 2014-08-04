@@ -1,0 +1,99 @@
+Independent Group Intervals
+	def: comparing independent groups
+	notation: pooled variance estimator
+	result: sum of independent chi squared
+		together: standard normal by the square root divided by degrees of freedom
+		ci: assumes constance variance across groups
+	example: oral contraceptive
+	unequal variances: approx follows Gosset's t dist with degrees of freedom
+	Comparing other kinds of data: binomial, count, (see biostatistics boot camp)
+Hypothesis Testing
+	def: making decisions using data, null status quo (assumed true, requires evidence to reject it)
+		example: respiratory disturbance index
+	alt hypothesis: typically in form >, <, <> (error types)
+		discussion: court of law analogy, balance amount of evidence, set level to reject/retain
+		scale: trans and work with things on a standard score of standard errors (standard errors of hypo mean vs null mean)
+	general rules: relation to critical value, number of sides of the test
+		notes: reject null with low alpha (model wrong, low probability of error)
+			alternative: do not accept alternative, just fail to reject alternate (have not ensured no beta error, type 2)
+			significance: not the same as scientific significance
+		clt: z test assumes clt, n large enough to apply
+			power: probability of rejecting null when false, beta = 1 - power (commonly used to determine sample size)
+	connection with CI: take set of possible values fail to reject null, this set is (1-alpha)100% CI for the mean
+P-Values
+	measure: most common measure of statistical significance, people love to fight over them
+		ubiquity: concern about interpretation, controversial in stats community
+		positive comments: some blog and articles noted that give some more info that is positive
+		idea: suppose nothing is going on, how unusual is the estimate we got
+			1. define hypothesis at null
+			2. calc summary stat of test data
+			3. compare what we calc to hypo null to see if value is extreme
+	def: probability under null hypothesis of obtaining evidence as extreme or more that chance alone
+		- prob of seeing evidence this extreme (1 tail vs 2 tail) is n
+	attained significance level: smallest value fo alpha that you still reject the null
+		- equivalent to p-value, but philosophically slightly different
+		notes: reader can perform any alpha test they like, bright line for rejection/acceptance
+			2 sided: double the value of the smaller one sided
+	example: 8 children, 7 girls, no twins
+	example: poisson, hosptial infection rate
+Power
+	def: probability of rejecting null hypothesis when it is false
+		good: it is good, you want more
+		type 2: failing to reject null, you want to avoid with power
+	calculating
+		Gaussian: test normalized test statistic, reject if bigger than t test z critical value
+		area: all area of dist above the test stat and not accounted for by null area
+	use: choose sample size to ensure the amount of power we want to do, make study worth doing
+		- if the alt is true, we have a chance to reject null in favor of alt
+		project: can project the power given the same result over a different sample size, study design
+		directional hypothesis: 1 direction, calc power based on 1 direction, use plot to show (CODE)
+	question: notice if power is 1 - BETA, yields equation, specify 3 unknowns allows solve for rest
+	notes: 
+		not equal: for hypoth, exclude probability of direction
+		power goes up: alpha larger, one sided > two sided
+		t-test: requires non-central t dist, power.t.test {R}
+	R example: calc power, n sample size
+Multiple Testing
+	key ideas: hypothesis/sig test commonly overused
+		3 era of stats: huge data sets, classical, scientific mass production
+	types of errors: test H <> 0
+		t1/FP: claim paramater does not equal when it does
+		t2/FN: claim paramater equals 0 when it does not
+		familywise error rate: prob of at least 1 false positive
+		false discovery rate: rate that claims of significance are false (closely related to t1)
+	controlling
+		controlling false positive rate: calling all P < alpha will control for false positives
+			familywise: bonferroni correction, for m tests, calc p-values normally, divide by m
+		controlling false discovery rate: for m tests, order p-values small to big
+			- for each, calc based on ratio to largest p-value in set, i/m
+	error rates:
+		false pos rate: rate at which results are called sig when they are not, over all
+		familywise rate: probability of 1+ false pos
+		false discovery rate: rate of claims of significance are false, E[v/r]
+	example: visual example with all forms
+	adjusted p-values: adjust threshold, can be used directly without adjusting alpha
+	notes: multiple testing is entire subfield, basic correction usually enough
+Resampled Inference
+	jackknife: tool for estimating standard errors and bias of estimators
+		function: deletes each observation and calculates estimate based on rest of data
+		code: using median
+		even: if n is even, SE estimate is 0 (should know when using)
+		psuedo observations: what observation i contrtibute to estimate of theta
+	bootstrap: very useful for calc CI
+		principle: using the distribution defined by the data to approx sampling dist
+		process: resample from the sample to get kind-of samples from populatoin
+			simulation: sample IID with replacement, approx similar to true dist, use means of each set
+			non-parametric: not using a model, use for a histogram, dist, SD, and CI
+			code: example with resampling simulation
+		notes: better CI exist that correct for bias, other resources
+	group comparison
+		permutation test: hypoth that obs are interchangable and labels are irrelevant
+			dist of combined data, see if statistic of test are relevant
+		variations: raw data, binary data, ranks (simulate randomizing)
+			matched: randomize the +/- sign
+			regression: permute a regressor of interest
+		example: pesticide data
+
+
+
+

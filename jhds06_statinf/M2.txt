@@ -1,0 +1,83 @@
+Common Distributions
+	Bernoulli: binary outcomes
+		PMF: p and 1-p
+		mean: p
+		var: p(1-p)
+		IID Trials: observed likelihood (product of each), maximum likelhood (sample proportion)
+	Binomial: sum of bernoulli random variables
+		order: not concerned with order, just combinations
+		coins: HTH vs 2H in 3 tosses
+	Normal/Gaussian
+		standard: mean 0 and sd 1
+		sd from mean: 68%, 95%, 99% estimations
+		percentiles: quoted in standevs from mean, useful for calc CI
+		properties: symmetric, constant, sums, sample means, square (chi-squared), random limits to normal commonly
+	Poisson
+		use: model counts, expected value of x for both mean and variance
+		application: event/time, radioactive decay, survival, unbounded count, contingency tables, approx binomials skewed
+		derivation: lambda = mean number of events per unit time, small window, probability inside window, independent
+		rates and random variables: lambda has to be in a unit over a given time
+			binomial approx: np
+		example: ppois()
+Asymptopia (The land of Asymptotics)
+	Asymptotics: statistics limiting to infinity, infinite data, simple approx, basics of frequency interpretation
+	Limits LLN (Law of Large Numbers)
+		example: sequence 0.9999 repeating infinitely converges to 1, get closer to limit infinitely
+		random vars: more difficult since they jump around everywhere, proability convergence
+		law of large numbers: for IID vars, converge to mean
+		plot example: plot cumulative means converging to 0
+		discussion: consistency, sample mean consistent (and sample sd and var)
+	Central Limit Theorem: one of the most important in stats
+		def: avrages of IID variables normalized look like standard normal as sample size increases
+		example: roll n dice, take mean of value with normalized data
+		example: coin flips, takes longer but still starts to converge in a little as 20 flips
+	CLT in practice
+		1.96: good estimation of CI in practice for 95% for sample means
+		example: galton
+		sample proportions: use in standard error creates Wald CI
+		poisson interval: 
+		regression class: another way using GLM (later)
+T Confidence Intervals
+	Scope: methods for small samples, use pivot independent of the paramater of interest to use
+	Chi Squared Distribution: skewed distribution based on degrees of freedom
+		notes: interval relies heavily on normality of data (may want to bootstrap)
+	Gosset's t distribution: (Student) thicker tails than normal, indexed by DOF
+		result: gets rid of the sigma and replaced it according to degrees of freedom
+		CI for the mean: 
+		notes: assumes normal (robust), paired observations use difference, skewed dist t spirit violated, bad for discrete
+		R: t.test(), can use t.test()$conf.int to get the output you want instead of the whole things
+Likelihood
+	def: common gruitful approach to assume that data arises from a family of distributions, represents useful summary
+		normal: indexed by 2 paramaters (mean, variance)
+		PMF: given function or density, likelihood is a function of theta for fixed observed value of x
+		proportional: does not have absolute scale, interp in relative scale only, related to another paramater value
+	Interpretation: 
+		ratios: measure the relative evidence of one value to anther when both are unknown
+		model: given model and data, all relevant info contained in the data is in the likelihood
+		IID: indipendent variables, their likelihoods multiply
+	example: flip coin, result is head, likelihood of fair coin, more evidence supporting fair coin hypothesis
+		multiple flips: 1011, given more data changes likelihood of hypothesis truth, combine terms with multiplication
+		plotting: relative evidence means we should normalize by ratio to height 1
+	MLE: plot 1 as maximum likelhood ratio, and all others normalized by MLE
+		- value of the paramater that makes the observed most probable, most supported by data
+		interp: likelhood of hypothesis true given data as evidence, value of theta that makes observed data most probable
+		results: normal, bernoulli, binomial, poisson (lambda t, lamdba for many events)
+	example: 5 failures of 94 days of monitoring nuclear pump
+		code: produce plot of MLE and theta estimation landscape
+		plot: should produce whole plot, to demo whole likelihood picture
+Bayes Inference
+	bayesian statistics: posits a prior knowledge on the paramater of interest
+		inference: performed on the posterior, the paramater given the data
+		posterior ~ likelihood x prior
+	prior specification: beta dist is default prior, (notes on beta function), 
+		special case: alpha = beta = 1 = uniform density
+		paramaters: as values get bigger, look more normal with skew, many shapes possible, very flexible
+	posterior: density is another beta density, posterior number of failure and success (cannot be 0)
+		thoughts: posterior mean mixture of MLE and prior mean
+			- additional notes on interpretation
+	example: plot with manipulate, prior and posterior related with code
+	credible intervals: bayesian analoge of a CI, 100% best for interp
+		best: chop off posterior with horizontal line, like likelihood
+		HPD: highest posterior density intervals, chop off to get to 95%
+		
+

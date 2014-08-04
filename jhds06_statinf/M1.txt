@@ -1,0 +1,97 @@
+Intro
+	Defined: formal conclusions from data, infer facts about a population while accounting for uncertainty
+	Motivating Example
+		Example: who will win the next election
+			Target of estimation: voters that will vote for each candidate
+			collect reasonable subset: what the inference tell us
+		Example: hormone replacement therapy, stopped early, inferential problems
+		Example: ECMO, brain treatment, neo-natal, ethics led to randomization of control
+	Summary: difficult to use data to generalize conclusions about conclusions
+		Concerns: representative, other variables, bias, randomness accounted, mechanistic model
+		Goals: estimate/quantify uncertainty, population quantity benchmark, infer mechanistic relationships, determine impact
+	Tools: randomization, random sample, sample models, hypo testing, CI, probability models, study design, bootstrapping
+	Different Thinking about Probability leads to Different Styles of Inference
+		Styles: frequency probability, frequency inference, bayesian probability, bayesian inference
+		This class: basic sampling models, mostly frequency style, start with basic probability
+	Learn More on topics not covered
+		finite population stats, explicit use of randomization in inference, causal inference
+		bayesian probability and stats: many intro books
+		missing data: multiple imputation, well covered in biostats and econometrics
+		study design: best covered in subject matter discipline
+Probability
+	Notation
+		sample space: all possible outcomes
+		event: subset of sample space
+		simple/elementary event: specific element of sample space
+		null event or empty set
+	Set Operations Interpretation
+		1. in: event is in the set, implies occurs when condition
+		2. not in
+		3. - 7.
+	Probability measure: function from the collection of possible events
+		prob range 0 to 1
+		P(anything) = 1
+		mutually exclusive, P(union) = sum of prob of events
+		Example Consequences
+	Random Variables: numerical outcome of an experiment
+		varieties: discrete or continuous
+		examples: 0/1 outcome of coin flip, die roll, BMI of subject 4 years later, hypertension status of random subject
+		PMF: probability mass function (discrete), must be > 0 or all plugged values, sum has to = 1
+			example: coin flip, fair and unfair
+		PDF: probability density function, continuous random variable, areas under pdfs within range
+			requirements: f(x) >= 0 for al x; area under f(x) == 1
+			example: proportion of help calls addressed in random day
+			R: for any density den, pden() will give probability under that function (pbeta() in this example)
+	Distribution Functions
+		CDF: probability is less than a specific value in the cumulative distrubution
+			suvival function: 1 - CDF, inverse
+			PDF: derivative of CDF
+	Quantiles: similar to percentile without requiring expression as a percent, works for any quantity
+		R: q on density as a function, qbeta() for quantile computation
+	Summary: population quantities, probability model connects data to popultion using assumptions
+Expectations
+	expected values: center of distribution, 
+		discrete: definition sum over possible values, center of mass of a collection, fulcrum of the data
+			example: manipulate library, tactile interface for R to demo, code in slides
+			example: flip a coin, expected value between H and T, balance discrete values
+		continuous: area under function, center of mass for continuous body
+		rules: expected value is linear operator
+			example: flip coin and uniform ranodm number, calc separately and add together
+			example: roll die twice, expected value of average, same as expected value of single
+			remark: expected value of sample mean is population mean, unbiased when estimation same mean as population
+	variance: measure of spread of a random variable, expected squared distance from the mean
+		computational form: expected value of x**2 minus expected value x, squared
+		standard deviation: square root of variance
+		interpreting variance: inequality as a bound
+		examples
+Independence
+	independent events: if product of intersection is multiple of independent probabilities
+		example: SIDS trial, mistake was to assume independence (other factors, biological, things shared in families)
+		fact: if a collection of random variables are independent, their joint density is their products
+			IID
+			example: flip biased coin, success probability p n times, join density regardless of order
+		correlation: covariance between random variables, measure of how unrelated 2 variables are in linear relationship
+			define: covariance / standard deviation product
+		useful results: collection of random variables, sums of variances tend to be useful not sum of standard deviations
+	standard error: stdev / sqrt(n), standev of dist of sample mean, standard deviation of a statistic of the group
+		sample mean: has to be less variable than a single observation due to overlap from the number of draws
+	sample variance: sample average deviation from the empirical mean
+		quick computation version of the numerator
+		sample variance nearly mean of the squared deviations
+	example: father-son data in R
+Conditional Probability
+	Motivation: probability given additional information
+	definition: probability of intersection over probability of condition independently
+	Bayes Rule
+		diagnostic test example: pos and neg tests, 
+		sensitivity: prob of test pos given person has disease
+		specificity: prob test negative given subject does not have disease
+	positive predicted value/negative predicted value, marginal probability
+	diagnostig likelihood ratio (pos and neg)
+	example: HIV test efficacy
+		low pos predictive value, scaled heavily by the low prevalence of the disease
+		other factors: any additional factors may invalidate
+		prevalence: the probabilit does not change given the test, only the application to the condition subject
+		DLR: determine the additional probability differential in the pre-test vs post-test information gain
+
+

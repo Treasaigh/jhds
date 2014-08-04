@@ -1,0 +1,62 @@
+Intro
+	Communicatable: what you do is reproducible by someone else independently
+	Course: tools to help make this goal work in analysis products
+Concepts & Ideas
+	Replication: standard in science, findings replicable, (important on policy or persuasion research)
+		Wrong: some studies can't be replicated (bigger, money, time, versions)
+		Reproducible: in-between where same data can lead to same conclusions
+		Why: new tech, merge databases into mega-databases, computation power, validate analysis
+		Computational: there is a version of many fields in science
+	Example: Air Pollution Health Research, small health effects/signal, policy, high scrutiny
+		iHAPSS: code and data repo for JH studies on the topic
+	Research Pipeline: what goes into an article or findings
+		Pipeline: analytics pipeline/data flow (wrangling, analytic code, visualization)
+		IOM Report: data made available, code should be available, all levels of analysis available
+	Need: analytic data, analytic code, documentation, standard means of distribution
+		Players: authors vs readers
+		Challenges: effort to get things to web, reader access and assembly, resources of reader vs author (cluster, etc)
+		Reality: authors just put stuff on web, readers have to deal with it
+	Literate Statistical Programming: article is a stream of text/code
+		Weave: program can be weaved to be human readable and machine readable both
+		Sweave: used Latex and R, lacked a lot of features, not actively developed
+		knitr: more recent package, mix other languages with R (Latex, Markdown, HTML)
+	Summary: minimum standard, more infrastructure is needed
+Scripting Analysis
+	Principle: script everything, write everything down primarily as scripts or programs
+	Music Example: analysis is like hearing only the melody, need all of the supporting players of the orchestra
+	Score: scripts are like the score of your analysis where anyone else can make the same thing
+Structure of Data Analysis
+	Steps: define, ideal data, obtain, clean, EDA, model, results, reproduce
+		Key Challenge: there are always challenges to get what you need to solve a problem worth solving
+	Question: define a question, dimension reduction, narrow to specificity
+		Example: spam detection question definition, make it concrete and quantitative
+		Ideal Data: data set depends on your goal, what does perfect look like
+			Access: what data can you actually get, deal with in volume (find, buy, generate)
+	Obtain: try for raw, reference source, polite emails go a long way, record time/date accessed
+		Clean: processed, understand source and gather methods, formats, quality, good enough to solve problem?
+	Subsample: split into test and train to see how good our model is at performing
+	EDA: summaries, missing data, plots, exploratory analysis
+	Modeling: use EDA to inform, methods depend on question, trans accounted for, measures of uncertainly reported
+		Code Sample: single variable logistic regression to check cross-validated error rate
+		Measure of uncertainty: code sample on predictions on test set, get error rate
+	Interpret Results: appropriate language, explanation, interpret coefficients, measures of uncertainty
+		Challenge Results: all steps under scrutiny, uncertainty, appropraite model, examine assumptions/methods
+		Synthesize Results: write up, start with question, summarize into story, include what helps story, pretty figures
+	Summary: example summary of pipeline process
+Organizing Analysis
+	Files: data, figures, r code, text
+	Data
+		raw: include if possible, otherwise point to where it can be found
+		Processed Data: shows to see how data looked headed into analysis
+	Figures
+		Exploratory figures: need to show what you were seeing
+		Final: more polished, better coloring, small number
+	Scripts
+		raw: not used in final, paths you went down
+		final: clearly commented, processing details, very clean
+	Text
+		r markdown: generate into reproduciple reports, mix code and text
+		readme: expalin what is going on inside
+		document: write up, formal, publish quality, tell the story
+
+		

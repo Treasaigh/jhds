@@ -1,0 +1,4 @@
+https://github.com/adoroszlai/RepData_PeerAssessment1
+https://github.com/lucacerone/RepData_PeerAssessment1
+https://github.com/AlexRoopesh/RepData_PeerAssessment1
+https://github.com/silviad/RepData_PeerAssessment1

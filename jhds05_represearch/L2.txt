@@ -1,0 +1,77 @@
+Coding Standards in R
+	Use: make code readable, hard to agree on set of all ideas
+	Text Editor: write without additional formatting, able to be read with any program
+	Indent: readability, blocks spaced together for flow of program (4 or 8 spaces suggested)
+	Width: how wide code can be (80 cols is common)
+	Function Length: limit to 1 basic activity, use multiple functions for reusability
+		Screen: function should fit roughly on 1 screen of the editor to make it easy to see what it does
+Markdown
+	Use: create docs witout overhead of other tools, easy to use with R and other language
+	Define: text to HTML conversion tool
+	Examples
+		*Italics*
+		**Bold**
+		## Heading
+		- first item in a list
+		2. second ordered list item
+		[Links](url)
+		[Link also][1]
+			[1]: www.url.com/ "Link also"
+		Newline  with double space
+	Resources: documentation, github guide
+R Markdown
+	Coupling: combine Markdown with R code, "live" R code, Rcode processed with markdown
+		Results: inserted into Markdown, useful for demo
+		Tool: core for literate statistical programming
+	knitr: reads r markdown file, output straight markdown with evaluations computed ready for HTML conversion
+		Process: R markdown --[knitr]--> Markdown --[markdown R package]--> HTML
+		slidify: package used for lecture slides
+	Demo
+		RStudio
+		New Markdown
+		Knit HTML: runs and displays in small HTML window
+		```{r}
+		R code goes here
+		```
+knitr
+	Literate Statistical Programming
+		Problems: lots of effort to put everything on web, how to assemble
+		Idea: document code with the analysis itself
+			article: stream of text and code
+		Language: needs a documentation and programming language
+		How to make Reproducible: start from the beginning, keep track (version control), code stat software (no GUI likely)
+			output: don't store, keep the original product with the code that got you there
+			formats: save in non-proprietary to keep open
+		Pros: text/code in one place, logical order, auto update on external changes, code is live will auto regression test
+		Cons: everything in once place, hard to edit, if there is a lot of code, complex may make processing slow
+	knitr: r package, built into RStudio
+		supports: R Markdown, LATEX, HTML
+		requirements: text editor, support packages, knowledge of markup languges, RStudio takes care of all
+		Useful: manuals, short tech doc, tutorial, reports, data pre-processing documents/summaries
+		Not useful: long articles, complex computations (time consuming), precise formatting
+	Creating
+		New Document
+		R Markdown
+		```{r} code chunk ```
+		Complicated way to keep: see slide
+		Notes: knitr will fill new doc, code chunks can have names (useful for graphics), code echoed by default
+	Processing
+		edit: should not edit .md or .html, only edit the origin .rmd
+		```{r computetime, echo=FALSE}
+		time <- something
+		rand <- rnorn(1)
+		```
+		The current time is `r time`. My fav random number is `r rand`.  ## plug in computed variables inline in text
+	Graphics: embed graphics as png with embedded graphics with HTML code
+	Tables: xtable package
+	Global Options: apply to all code in document, opts_chunk object
+		results: asis or hide
+		echo: TRUE, FALSE
+		figures: size and other options
+	Cache Computations: only runs the code the first time, will load from disk if nothing has changed
+Intro to PS1 (Peer Assessment)
+	Project: put in rmd and submit github repo url with SHA-1 commit hash
+	Eval: go to one submitted by another student to eval their work
+
+
+

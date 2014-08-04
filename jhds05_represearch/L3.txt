@@ -1,0 +1,36 @@
+Communicating Results: specifying levels of detail
+	tldr: people are busy, results may be oral but will often be in email, break down to different levels of specificity
+	Hierarchy of Info
+		Research paper: title, abstract, body/results, supplementary materials, code/gory details, data
+		Email present: subject concise, body with results early and more detail later (newspaper approach)
+			attach: add the more detail stuff, knitr file, stay concise, links to more materials
+RPubs
+	rpubs.com: make account, place to publish your analysis
+	publish: button post knitr-ing, post to rpubs, gives you permanent url similar to github
+Reproducible Research Checklist
+	DO start with good science: GIGO, focus, good collaborators, interesting (hopefully)
+	DONT do things by hand: edit spreadsheets to clean it up, edit tables/figures, downloading data from website
+	DONT point and click: use the GUI to do things, can be replaced by code, look for logs of what you did
+	DO teach a computer: give code instructions, write down exactly what you mean, almost guarantees reproducibility
+	DO use version control: slow things down, add changes in small chunks, able to revert
+	DO keep track of environment: architecture, OS, toolchain, support software, external dependencies, versions
+		R: sessionInfo()
+	DONT save output: avoid saving output except temporary, stray may not be reproducible, save data + code
+	DO set seed: reproduce random numbers generated, use for anything non-trivial
+	DO think about entire pipeline: may be lengthy process (raw data -> processed data -> analysis -> report)
+	Summary: good science, hand?, coded?, version control, documented environment, saved output, reproducible whole pipeline
+Evidence Based Data Analysis
+	Replication vs Reproducibility
+		Backgrounds and Underlying Trends: some things can't be replicated for several reasons
+		Result: basic analysis difficult to describe, heavy computational analysis
+	Reproducible: data flow graphic
+		Solve: transparancy, availability of data, methods, trans knowledge, does not implicitly validate
+	Analogy: asthma, downsteam peer review, make code available during publication process
+	Who: what are the goals of someone that wants to reproduce
+		transparency: trans knowledge, trust analysis (allows openness), evidence to justify application of given method
+	Standardize: once pipeline is setablished, should not mess with it, reduce researcher degrees of freedom
+	Case Study: acute effects of air pollution
+Intro to PS2
+	Data Analysis on NOAA, sample linked with video
+
+

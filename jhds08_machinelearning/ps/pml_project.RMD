@@ -1,0 +1,155 @@
+---
+title: "Practical Machine Learning - Course Project"
+author: "Frank D. Evans"
+output: html_document
+---
+
+**Background**  
+Quantified Self devices are becoming more and more common, and are able to collect a large
+amount of data about people and their personal health activities. The focus of this project
+is to utilize some sample data on the quality of certain exercises to predict the manner in
+which they did the exercise.  
+  
+**Analysis**  
+This analysis will build a machine learning model from the sample data that is attempting 
+to most accurately predict the manner in which the exercise was performed.  This is a 
+classification problem into discrete categories, which in the training data are located 
+in the 'classe' varaible.  
+  
+**Load and Preprocess**  
+The analysis starts by downloading the data into local files.  There are 2 data sets, 
+the training data set and the testing data set we are attempting to perform the 
+predictions from the final model on.  When the data is loaded into dataframes, it is 
+necessary to locate strings containing '#DIV/0!' in otherwise numeric data, a common 
+sentinal error code for division by zero errors.  These error codes are loaded into the 
+data frame as NA fields.  Though the code has been retained, for the purpose of this analysis, 
+the download code is not executed when compiling the analytic document.
+```{r results='hide', message=FALSE, warning=FALSE}
+library(caret, quietly=TRUE)
+url_train <- 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'
+url_test <- 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'
+# download.file(url = url_train, destfile = 'data_train.csv')
+# download.file(url = url_test, destfile = 'data_test.csv')
+pml_train <- read.csv(file = 'data_train.csv',
+                      na.strings = c('NA','#DIV/0!',''))
+pml_quiz <- read.csv(file = 'data_test.csv',
+                     na.strings = c('NA','#DIV/0!',''))
+```
+  
+Exploratory Data Analysis reveals that the first 7 fields of the data are dimensional, and 
+may not be pertinent to the prediction model. The balance of the fields are numeric according 
+to the data documentation available [here](http://groupware.les.inf.puc-rio.br/har). The balance 
+of the columns are looped through and cast into numeric data with the exception of the last 
+column, which is the categorical class the prediction model will classify for.
+```{r}
+for(i in c(8:ncol(pml_train)-1)) {
+  pml_train[,i] = as.numeric(as.character(pml_train[,i]))
+  pml_quiz[,i] = as.numeric(as.character(pml_quiz[,i]))
+}
+```
+  
+Analysis additionally reveals that of the many variables, several are extraordinarily sparse and 
+thus may not be as useful for building a classification model. The following code initiates a 
+slicer index of column names, removes the columns with null values, and also removes the inital 
+seven columns of dimensional data.  Rather than modify the actual data, this vector of column 
+names will be used as a slicer index into the training data, cross-validation data, and the 
+testing data when interacting with a model.
+```{r}
+feature_index <- colnames(pml_train)
+feature_index <- colnames(pml_train[colSums(is.na(pml_train)) == 0])
+feature_index <- feature_index[-c(1:7)]
+```
+  
+**Splitting Data into Testing and Cross-Validation**  
+To find an optimal model, with the best performance both in Accuracy as well as minimizing Out 
+of Sample Error, the full testing data is split randomly with a set seed with 80% of the data 
+into the training sample and 20% of the data used as cross-validation. When the samples are 
+created, they are sliced by column against the feature set so only the variables of interest 
+are fed into the final model.
+```{r}
+set.seed(1300)
+index_train <- createDataPartition(y=pml_train$classe, p=0.80, list=FALSE)
+data_train <- pml_train[index_train,feature_index]
+data_xval <- pml_train[-index_train,feature_index]
+dim(data_train); dim(data_xval)
+```
+  
+**Pre-Model Fitting Class Examination**  
+Before a model is fit, it is useful to have an idea of the ratio that should be expected of 
+the classification variable outcome.  This wil govern how we seek to optimize models for 
+Specificity, Sensitivity, and Positive/Negative Predictive Value.
+```{r echo=FALSE, fig.height=5, fig.width=10}
+ggplot(aes(x=classe), data=data_train) +
+    geom_histogram(fill='dark orange') +
+    ggtitle('Histogram of Classe Frequency in Training Set') +
+    xlab('Classe of Excercise') +
+    ylab('Frequency in Training Data')
+```
+  
+The chart above shows that each of the classifications are within an order of magnitude of 
+one another, with each class roughly as likely as any other. This indicates that optimizing 
+a model for accuracy and minimizing overall out of sample error should indicate an optimal 
+model for making classificions.  
+  
+**Train Candidate Model and Cross Validate**  
+From prelimiary analysis, a Random Forest model was chosen.
+```{r results='hide', message=FALSE, warning=FALSE}
+mod_rf <- train(classe ~ .,
+                data = data_train, 
+                method = 'rf', 
+                trControl = trainControl(method = "cv", 
+                                         number = 4, 
+                                         allowParallel = TRUE, 
+                                         verboseIter = TRUE))
+pred_rf <- predict(mod_rf,data_xval)
+cm_rf <- confusionMatrix(pred_rf,data_xval$classe)
+```
+  
+**Predictions Against Cross Validation Data**  
+For each candidate model, predictions are made agaist the cross-validation data set. 
+Then, a confusion matrix is calculated and stored for each model for later reference.
+  
+The Random Forest model appears to be the most accurate. Further exploration of 
+the model will help confirm.  
+```{r echo=FALSE, fig.height=5, fig.width=10}
+ggplot(data=data.frame(cm_rf$table)) + 
+    geom_tile(aes(x=Reference, y=Prediction, fill=Freq)) +
+    ggtitle('Prediction Accuracy for Classes in Cross-Validation (Random Forest Model)') +
+    xlab('Actual Classe') +
+    ylab('Predicted Classe from Model')
+```
+  
+The plot above demonstrates the accuracy of the model by comparing the predictions for each 
+class against the actual value in the cross validation set, and coloring the tile intersection 
+for each combination of outcome class by the frequency of prediction. The intersection of the 
+same value for Predicted Classe and Actual Class is very high for all 5 classes in the Random 
+Forest model, indicating that the model is highly accurate, both overall as well as within 
+each class.  
+  
+Beyond just evaluating a graphical representation, it is prudent to examine the entire bank 
+of calculated statistics available within the confusion matrix object from the cross-validation 
+data for the Random Forest model.
+```{r}
+cm_rf
+```
+The accuracy of the model is `r cm_rf$overall['Accuracy']`. The out of sample error is
+`r 1 - cm_rf$overall['Accuracy']`. The out of sample error is calculated as ```1 - accuracy``` 
+for predictions made against the cross-validation set. Considering that the test set is a sample 
+size of 20, an accuracy rate well above 99% is sufficient to expect that few or none of the 
+test samples will be mis-classified.
+  
+**Applying Selected Model to Test Set**  
+For the test results, there are 20 samples asked to be classified.  The column names are not 
+consistent between the test and training data. It is necessary to rename the last column in 
+the testing set for compatability. However, since that column will not be used in the model 
+feature set being fed into the predictor, the column name change unaffects the predictions. 
+Once the predictions are made from the chosen Random Forest model, the prediction vector is 
+shown.
+```{r}
+final_col <- length(colnames(pml_quiz[]))
+colnames(pml_quiz)[final_col] <- 'classe'
+quiz_rf <- predict(mod_rf,pml_quiz[,feature_index])
+quiz_rf
+```
+
+

@@ -1,0 +1,2 @@
+https://github.com/bpoweski/practical-machine-learning/blob/master/project.R
+https://github.com/jeffheaton/jhi-practical-machine-learning/blob/master/PracticalMachineLearning.RMD

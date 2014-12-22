@@ -1,0 +1,155 @@
+---
+output: html_document
+---
+### Swiftkey Prediction Project - Milestone Report
+
+
+__Frank D. Evans__  
+__Data Science Specialization - Johns Hopkins University__
+  
+  
+__Intro:__ The overall goal of this project is to create a text prediction system similar to the 
+SwiftKey keyboard application for the Android Mobile platform. This analysis is a Milestone Report
+on Data Handling, Exploratory Data Analysis, Model Design, and planned Application Architecture.
+  
+__Exploratory Data Analysis__
+  
+  
+_Load Data_
+```{r}
+news <- scan(file = './data/en_US.news.txt', what = 'character', sep = '\n')
+blogs <- scan(file = './data/en_US.blogs.txt', what = 'character', sep = '\n')
+twitter <- scan(file = './data/en_US.twitter.txt', what = 'character', sep = '\n', skipNul = TRUE)
+```
+  
+_Clean Corpus Contents and Calculate Word Counts_
+```{r}
+library(stringr)
+clean_corpus <- function(corpus) {
+    output <- tolower(corpus)
+    output <- str_replace_all(output, pattern = "'", replacement = "")
+    output <- str_replace_all(output, pattern = "[^[:print:]]", replacement = "")
+    output <- str_replace_all(output, pattern = "[^[:alpha:] | [:space:]]", replacement = "")
+    output <- str_trim(output, side = 'both')
+    output <- str_replace_all(output, pattern = " {2,}", replacement = " ")
+    output <- str_split(output, pattern = "[[:space:]]")
+    output
+}
+news_clean <- clean_corpus(news)
+blogs_clean <- clean_corpus(blogs)
+twitter_clean <- clean_corpus(twitter)
+
+doc_counts <- c(length(news), length(blogs), length(twitter))
+word_counts <- c(length(unlist(news_clean)), 
+                 length(unlist(blogs_clean)), 
+                 length(unlist(twitter_clean)))
+eda_df <- data.frame(corpus_name = c('news','blogs','twitter'),
+                     doc_counts = doc_counts, 
+                     word_counts = word_counts)
+eda_df$avg_doc_length <- word_counts / doc_counts
+eda_df
+```
+Before statistics are calculated, documents are cleaned to cast all characters to lowercase, remove 
+all punctuation (but leave cohesive words together), strip out any excess whitespace, and split the 
+documents into words. The twitter corpus contains the most documents by a large margin, while the 
+news and blogs are roughly equivalent. However, there is a considerable difference in the average 
+word count among the three corpus sets, with the blogs averaging the largest number of words per 
+document.
+  
+_Overall Word Frequency_
+```{r}
+word_freq_all <- read.table(file = './data/int_word_freq_all.csv', 
+                            header = TRUE, sep = '|', stringsAsFactors = FALSE)
+head(word_freq_all)
+```
+Load the word frequency data frame from earlier pre-processing. For each word in the combined corpus,
+the integer count of occurence and the blended probability is calculated. The data frame is sorted 
+by word frequency, so examination of the first few records will demonstrate the structure of the 
+word count data.
+  
+```{r}
+length(word_freq_all$probability)
+sum(word_freq_all$probability[1:150])
+150 / length(word_freq_all$probability)
+```
+Although there are nearly 100,000 unique words used across the corpus documents, the most common 
+150 account for slightly more than half of all word freqeuncy. This represents less than 0.02% of 
+all unique words, yet account for more than half of word usage. Not surrprisinly, these words heavily 
+consist of 'stop words', or words that are used as connectors between thoughts. While these words 
+often to do not provide much information in the sentances they are contained in, they provide context
+for how the information of the sentance fits together. And, since they are so common, being able to
+accurately predict these words will be a major innovation in making accurate text predictions 
+overall.
+  
+```{r fig.align='center', fig.height=5, fig.width=8}
+plot(word_freq_all$count, type = 'l', main = "Word Frequency Probability - All Words")
+```
+When a plot of all word frequencies is used, the long tail is so prevalent that the falloff of
+the most common words appears to be a veritcal line.
+  
+```{r fig.align='center', fig.height=5, fig.width=8}
+plot(word_freq_all$count[1:500], type = 'l', main = "Word Frequency Probability - Top 500 Words")
+```
+Reducing the plot frequencies from the full 100,000 to just 500 helps get a sense of the steep 
+falloff of the frequencies within scale and provides a bit more detail.
+  
+  
+_Word Tuple Frequency_
+```{r}
+word_tuple_n2 <- read.table(file = './data/int_ref_all_n2.csv', 
+                            header = TRUE, sep = '|', stringsAsFactors = FALSE)
+head(word_tuple_n2)
+```
+Word frequency counts were computed during pre-processing for 2, 3, and 4 gram tuples; defined as 
+n words as keys and a value word as the prediction tail of the tuple. Hence, for the 3 tuple version 
+loaded here (2 tuple keys, 1 prediction value), examination of the data frame shows the structure. 
+As a part of the pre-processing, only tuples that showed up more than once across the corpus sets 
+are included.
+  
+```{r}
+length(word_tuple_n2$probability)
+sum(word_tuple_n2$probability[1:150])
+sum(word_tuple_n2$probability[1:10000])
+```
+It is not surprising that there are many more unique tuples even when only considering recurrent 
+cases, due to combinatorics. Thus, even when considering the probability of the top 10,000 cases, 
+only about 18% of probability is covered. For the same top 150, prediction probability is reduced
+to only 2%.
+  
+```{r fig.align='center', fig.height=5, fig.width=8}
+plot(word_tuple_n2$count[1:150], type = 'l', 
+     main = "Tuple n=3 Frequency Probability - Top 150 Words")
+```
+The comparative dropoff is much less on the same 150 word scale. When it is possible to make 
+predictions based on recurring phrases, the expectation is increased accuracy. However, this will 
+require a tradeoff of performance and memory as tuple probabilities require holding several orders 
+of magnitude more data in memory and search through it to make the most probable predictions.
+  
+  
+__Planned Application Architecture__
+  
+The application will use a waterfall format. When given a phrase, the application will make 5 
+predictions as to the next word. The predictions will be made in order from the following component 
+analytics in order of frequency:
+* Predictions for all matching n=4 tuples (3 key, 1 value)
+* Predictions for all matching n=3 tuples (2 key, 1 value)
+* Predictions for all matching n=2 tuples (1 key, 1 value)
+* Predictions for most common used words by flat frequency.
+  
+All duplicate predictions will be removed, to ensure that 5 unique predictions are made for all 
+entries. Additionally, the application will skip any prediction sub-models in the waterfall that 
+are not possible (e.g. 3 key predictions when only 2 words have been typed so far).
+  
+_Data Size:_ They constraints of the application design under this architechure is the data size 
+and integration into the shiny application. To make the absolute most accurate predictions in all 
+scenarios, inclusion of all tuple frequencies as large as computable would be available. However, 
+this will be too large for the Shiny environment to handle, and will likely cause lag in predictions 
+from the models making the end user wait time too long. Additionally, the Shiny source code will 
+not be able to natively include the data at that scale, and will need to integrate with data stored 
+in a cloud location (Dropbox, or the like) if necessary to the application performance. Thus, the 
+application will be developed to rely primarily on outside data integration from the cloud, but will 
+remain operational if such data is no longer available.
+  
+  
+  
+  
